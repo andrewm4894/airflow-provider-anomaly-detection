@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "airflow-provider-anomaly-detection"
+version = "0.0.3"
+authors = [
+  { name="andrewm4894", email="andrewm4894@gmail.com" },
+]
+description = "An airflow provider for anomaly detection."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Framework :: Apache Airflow",
+    "Framework :: Apache Airflow :: Provider",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+"Homepage" = "https://github.com/andrewm4894/airflow-provider-anomaly-detection"
+"Bug Tracker" = "https://github.com/andrewm4894/airflow-provider-anomaly-detection/issues"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]

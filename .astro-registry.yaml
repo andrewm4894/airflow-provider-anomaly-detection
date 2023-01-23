@@ -20,3 +20,8 @@ docs_url: https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob
 
 operators:
   - module: anomaly_detection.operators.metric_batch_ingest_operator.MetricBatchIngestOperator
+  - module: anomaly_detection.operators.metric_batch_train_operator.MetricBatchTrainOperator
+  - module: anomaly_detection.operators.metric_batch_train_operator.MetricBatchScoreOperator
+  - module: anomaly_detection.operators.metric_batch_alert_operator.MetricBatchAlertOperator
+  - module: anomaly_detection.operators.metric_batch_alert_operator.MetricBatchEmailNotifyOperator
+
