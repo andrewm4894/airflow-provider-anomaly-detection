@@ -3,8 +3,8 @@ from datetime import timedelta
 
 from airflow.decorators import dag, task
 
-from sample_provider.operators.sample_operator import SampleOperator
-from sample_provider.sensors.sample_sensor import SampleSensor
+from anomaly_detection.operators.sample_operator import SampleOperator
+from anomaly_detection.sensors.sample_sensor import SampleSensor
 
 
 @dag(
