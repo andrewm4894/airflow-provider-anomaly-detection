@@ -1,0 +1,17 @@
+metric_batch_name: metrics_hourly
+metric_batch_description: hourly metrics from various sources
+airflow_ingest_schedule_interval: '5 * * * *'
+airflow_training_schedule_interval: '30 8 * * *'
+airflow_scoring_schedule_interval: '10 * * * *'
+airflow_alerting_schedule_interval: '15 * * * *'
+airflow_start_date: '2023-01-16'
+train_max_n: 720
+train_max_n_days_ago: 30
+preprocess_n_lags: 2
+score_max_n: 1
+score_max_n_days_ago: 7
+alert_smooth_n: 3
+alert_status_threshold: 0.90
+alert_max_n: 72
+alert_max_n_days_ago: 7
+alert_window_last_n: 12

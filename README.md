@@ -1,32 +1,23 @@
 # Anomaly Detection with Apache Airflow
 
-TODO: Add a description of the project.
+Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with Apache Airflow.
 
-## Packaging
+1. Create and express your metrics via SQL queries.
+1. Some YAML configuration fun.
+1. Receive useful alerts when metrics look anomalous.
 
-https://packaging.python.org/en/latest/tutorials/packaging-projects/
+## Getting Started
 
-```bash
-# build dist
-py -m build
-```
+Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/) to get started.
 
-```bash
-# upload to testpypi
-py -m twine upload --repository testpypi dist/*
-```
+### Installation
+
+Install from [PyPI](https://pypi.org/project/airflow-provider-anomaly-detection/) as usual.
 
 ```bash
-# upload to pypi
-py -m twine upload --repository pypi dist/*
+pip install airflow-provider-anomaly-detection
 ```
 
-```bash
-# install dev requirements
-pip install -r .\requirements-dev.txt
-```
+### Configuration
 
-```bash
-# run pytest
-pytest
-```
+See the example configuration files in the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/) folder. You can use a `defaults.yaml` or specific `<metric-batch>.yaml` for each metric batch if needed.
