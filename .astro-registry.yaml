@@ -3,9 +3,9 @@
 # repo. The modules listed should pertain to latest, released version of the repo.
 
 # Python package name.
-package-name: anomaly_detection_provider
+package-name: airflow_anomaly_detection_provider
 # The name of the provider to be displayed on the Registry.
-display-name: Anomaly Detection Provider
+display-name: Airflow Anomaly Detection Provider
 # A description to be displayed on the main Provider page.
 description: An airflow provider for anomaly detection.
 # URL for where user should find the documentation for the Provider. This could be a link to the README,
@@ -19,9 +19,9 @@ docs_url: https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob
 # value should be "sample_provider.hooks.sample_hook.SampleHook".
 
 operators:
-  - module: anomaly_detection.operators.metric_batch_ingest_operator.MetricBatchIngestOperator
-  - module: anomaly_detection.operators.metric_batch_train_operator.MetricBatchTrainOperator
-  - module: anomaly_detection.operators.metric_batch_train_operator.MetricBatchScoreOperator
-  - module: anomaly_detection.operators.metric_batch_alert_operator.MetricBatchAlertOperator
-  - module: anomaly_detection.operators.metric_batch_alert_operator.MetricBatchEmailNotifyOperator
+  - module: airflow_anomaly_detection.operators.metric_batch_ingest_operator.MetricBatchIngestOperator
+  - module: airflow_anomaly_detection.operators.metric_batch_train_operator.MetricBatchTrainOperator
+  - module: airflow_anomaly_detection.operators.metric_batch_train_operator.MetricBatchScoreOperator
+  - module: airflow_anomaly_detection.operators.metric_batch_alert_operator.MetricBatchAlertOperator
+  - module: airflow_anomaly_detection.operators.metric_batch_alert_operator.MetricBatchEmailNotifyOperator
 

@@ -3,5 +3,5 @@ def get_provider_info():
         "package-name": "airflow-provider-anomaly-detection",
         "name": "Anomaly Detection Airflow Provider",
         "description": "An airflow provider for anomaly detection.",
-        "versions": ["0.0.1"]
+        "versions": ["0.0.4"]
     }
