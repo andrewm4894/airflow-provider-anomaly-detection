@@ -62,7 +62,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                         lines += '\n' + f't={0-i+2}'.ljust(6, ' ') + line
                 
                 qry_sql = f"""
-```
+```sql
 select *
 from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` m
 join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` s
