@@ -64,11 +64,11 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 qry_sql = f"""
 ```
 select *
-from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` metrics
-join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` metrics_scored
-on metrics.metric_name = metrics_scored.metric_name and metrics.metric_timestamp = metrics_scored.metric_timestamp
-where metrics.metric_name = '{ metric_name }'
-order by metrics.metric_timestamp desc
+from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` m
+join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` s
+on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
+where m.metric_name = '{ metric_name }'
+order by m.metric_timestamp desc
 ```
                 """
 
