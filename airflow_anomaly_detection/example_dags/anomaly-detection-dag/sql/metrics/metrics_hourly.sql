@@ -1,3 +1,16 @@
+/*
+
+This example query generates a batch of metrics for the last hour.
+The metrics are generated randomly.
+
+The outputs of the query must be in the following format:
+- metric_timestamp: The timestamp of the metric.
+- metric_batch_name: The name of the batch of metrics.
+- metric_name: The name of the metric.
+- metric_value: The value of the metric.
+
+*/
+
 with
 
 frontend_events as

@@ -1,4 +1,5 @@
 /*
+
 This query is used to preprocess the data before it is used for training the model 
 and during scoring using the trained model. Any cols starting with "x_" will be used
 as features for training and scoring.

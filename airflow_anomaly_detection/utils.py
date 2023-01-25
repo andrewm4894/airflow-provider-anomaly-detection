@@ -1,6 +1,7 @@
 import os
 import yaml
 
+# TODO: clean these up they are horrible
 
 def get_metric_batch_configs(config_dir):
     metric_batch_configs = [f'{config_dir}/{f}' for f in os.listdir(config_dir)]

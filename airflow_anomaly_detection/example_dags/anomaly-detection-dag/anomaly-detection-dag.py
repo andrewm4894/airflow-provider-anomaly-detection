@@ -1,4 +1,13 @@
 """
+Example DAG for Airflow Anomaly Detection
+
+This DAG is an example of how to use the Airflow Anomaly Detection package.
+
+The code below creates four separate dags that run independently:
+    - ingest: ingest metrics based on sql defined in the relevant metric batch file under /sql/metrics/<metric-batch>.sql.
+    - train: train a model based on the metrics ingested.
+    - score: score the metrics ingested using latest trained model.
+    - alert: alert based on recent scores and send an email if anomalies are found.
 
 """
 
@@ -36,7 +45,7 @@ metric_batch_config_defaults = get_metric_batch_config_defaults(config_dir)
 # GENERATE DAGS
 ##########################################
 
-# process each config
+# process each "metric_batch" config
 for metric_batch_config_file in metric_batch_configs:
 
     with open(metric_batch_config_file) as yaml_file:
@@ -46,14 +55,19 @@ for metric_batch_config_file in metric_batch_configs:
     metric_batch_config = metric_batch_config_defaults.copy()
     metric_batch_config.update(metric_batch_config_tmp)
 
+    # get params
     metric_batch_name = metric_batch_config.get('metric_batch_name')
     metric_batch_description = metric_batch_config.get('metric_batch_description')
+    
+    # read sql based metric definitions
     with open(f'{sql_dir}/metrics/{metric_batch_name}.sql', 'r') as file:
         metric_batch_sql = file.read()
     
+    # read sql based preprocess code and logic
     with open(f'{sql_dir}/preprocess.sql', 'r') as file:
         preprocess_sql = file.read()
 
+    # read sql based alert code and logic
     with open(f'{sql_dir}/alert_status.sql', 'r') as file:
         alert_status_sql = file.read()
     

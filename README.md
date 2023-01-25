@@ -58,6 +58,10 @@ A slightly more fancy chart is also attached to alert emails. The top line graph
 
 Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/) to get started.
 
+### Prerequisites
+
+* Currently only Google BiqQuery is supported as a data source. The plan is to add Snowflake next and then probably Redshift. PR's to add other data sources are very welcome (some refactoring probably needed).
+
 ### Installation
 
 Install from [PyPI](https://pypi.org/project/airflow-provider-anomaly-detection/) as usual.

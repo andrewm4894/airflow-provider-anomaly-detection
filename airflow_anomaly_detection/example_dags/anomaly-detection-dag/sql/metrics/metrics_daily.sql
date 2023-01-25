@@ -1,3 +1,17 @@
+/*
+
+This query generates a batch of metrics for the metrics_daily batch.
+The metrics are generated randomly, but the query can be modified to
+pull metrics from a data warehouse or other data source.
+
+The outputs of the query must be in the following format:
+- metric_timestamp: The timestamp of the metric.
+- metric_batch_name: The name of the batch of metrics.
+- metric_name: The name of the metric.
+- metric_value: The value of the metric.
+
+*/
+
 with
 
 user_signups as
