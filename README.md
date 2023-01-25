@@ -42,11 +42,11 @@ t=-24 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             2,739.00    40% 2023-0
 
 
 select *
-from `metrics.metrics` metrics
-join `metrics.metrics_scored` metrics_scored
-on metrics.metric_name = metrics_scored.metric_name and metrics.metric_timestamp = metrics_scored.metric_timestamp
-where metrics.metric_name = 'some_metric_last1h'
-order by metrics.metric_timestamp desc
+from `metrics.metrics` m
+join `metrics.metrics_scored` s
+on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
+where m.metric_name = 'some_metric_last1h'
+order by m.metric_timestamp desc
 
 ```
 
