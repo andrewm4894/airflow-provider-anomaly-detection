@@ -1,3 +1,12 @@
+/*
+This query is used to generate the alert status for each metric in the last {{ params.alert_max_n }} days.
+The alert status is a binary flag indicating whether the metric is anomalous or not.
+
+The alert status is calculated as follows:
+- For each metric, calculate the smoothed probability of anomaly using a moving average window of {{ params.alert_smooth_n }} days.
+- If the smoothed probability of anomaly is greater than or equal to {{ params.alert_status_threshold }}, then the alert status is 1, otherwise it is 0.
+*/
+
 with
 
 metrics_scored_recency_ranked as

@@ -4,7 +4,7 @@ from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
 import pickle
-from pyod.models.pca import PCA
+from pyod.models.iforest import IForest
 import tempfile
 from google.cloud import storage
 
@@ -28,6 +28,8 @@ class MetricBatchTrainOperator(BaseOperator):
         
         gcp_credentials = BigQueryHook(context['params']['gcp_connection_id']).get_client()._credentials
         gcs_model_bucket = context['params']['gcs_model_bucket']
+        model_type = context['params'].get('model_type','iforest')
+        model_params = context['params'].get('model_params',{'contamination' : 0.1})
 
         bigquery_hook = BigQueryHook(context['params']['gcp_connection_id'])
 
@@ -44,7 +46,10 @@ class MetricBatchTrainOperator(BaseOperator):
                 X = df_train[df_train['metric_name'] == metric_name]
                 X = X[[col for col in X.columns if col.startswith('x_')]]
 
-                model = PCA()
+                if model_type == 'iforest':
+                    model = IForest(**model_params)
+                else:
+                    raise ValueError(f'model_type {model_type} is not supported')
                 model.fit(X)
 
                 with tempfile.NamedTemporaryFile() as temp:

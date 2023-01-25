@@ -7,22 +7,26 @@ gcp_ingest_destination_table_name: metrics # table name to write metrics to.
 gcp_score_destination_table_name: metrics_scored # table name to write scored metrics to.
 gcs_model_bucket: some-gcs-bucket # a gcs bucket where trained models will be stored, one per metric.
 alert_emails_to: youremail@example.com # where you want alert emails to be sent.
-graph_symbol: '~'
-anomaly_symbol: '* '
-normal_symbol: '  '
-# below params might be better set in <metric-batch>.yaml specifc config files
-# airflow_ingest_schedule_interval: '5 * * * *'
-# airflow_training_schedule_interval: '30 8 * * *'
-# airflow_scoring_schedule_interval: '10 * * * *'
-# airflow_alerting_schedule_interval: '15 * * * *'
-# airflow_start_date: '2023-01-16'
-# train_max_n: 720
-# train_max_n_days_ago: 30
-# preprocess_n_lags: 2
-# score_max_n: 1
-# score_max_n_days_ago: 7
-# alert_smooth_n: 3
-# alert_status_threshold: 0.90
-# alert_max_n: 72
-# alert_max_n_days_ago: 7
-# alert_window_last_n: 12
+graph_symbol: '~' # symbol to use for graphing horizontal lines in alert emails.
+anomaly_symbol: '* ' # symbol to use for flagging anomalies in alert emails.
+normal_symbol: '  ' # symbol to use for flagging normal values in alert emails.
+model_type: iforest # a string to identify the PyOD model type to use.
+model_params: # params to be unpacked into the model constructor.
+  contamination: 0.05
+  n_estimators: 100
+# below params might be better set in <metric-batch>.yaml specific config files
+airflow_ingest_schedule_interval: '5 * * * *' # schedule for the ingest dag.
+airflow_training_schedule_interval: '30 8 * * *' # schedule for the training dag.
+airflow_scoring_schedule_interval: '10 * * * *' # schedule for the scoring dag.
+airflow_alerting_schedule_interval: '15 * * * *' # schedule for the alerting dag.
+airflow_start_date: '2023-01-16' # start date for the dags.
+train_max_n: 720 # max number of records to train on.
+train_max_n_days_ago: 30 # max number of days to train on.
+preprocess_n_lags: 2 # number of lags to create for each metric.
+score_max_n: 1 # max number of records to score.
+score_max_n_days_ago: 7 # max number of days to score.
+alert_smooth_n: 3 # number of records to smooth over when smoothing anomaly score prior to alerting.
+alert_status_threshold: 0.90 # threshold for the smoothed anomaly score for alerting on.
+alert_max_n: 72 # max number of records to alert on.
+alert_max_n_days_ago: 7 # max number of days to alert on.
+alert_window_last_n: 12 # only alert if anomalies fall within the last n records.
