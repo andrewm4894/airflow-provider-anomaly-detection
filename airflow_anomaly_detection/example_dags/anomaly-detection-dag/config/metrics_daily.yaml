@@ -7,7 +7,7 @@ airflow_alerting_schedule_interval: '30 9 * * *'
 airflow_start_date: '2023-01-16'
 train_max_n: 90
 train_max_n_days_ago: 90
-preprocess_n_lags: 2
+preprocess_n_lags: 3
 score_max_n: 1
 score_max_n_days_ago: 14
 alert_smooth_n: 3
