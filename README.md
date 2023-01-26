@@ -1,6 +1,6 @@
 # Anomaly Detection with Apache Airflow
 
-Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with Apache Airflow.
+Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/) via this community Airflow [Provider](https://airflow.apache.org/docs/apache-airflow-providers/#provider-packages) package.
 
 How it works in a nutshell:
 1. Create and express your metrics via SQL queries.
