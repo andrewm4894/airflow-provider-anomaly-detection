@@ -32,6 +32,7 @@ class MetricBatchAlertOperator(BaseOperator):
         df_alert = df_alert.dropna()
         df_alert['metric_timestamp'] = df_alert['metric_timestamp'].astype(str)
 
-        print(df_alert)
+        self.log.info(f'len(df_alert)={len(df_alert)}')
 
+        # push df_alert to xcom to by picked up by downstream notify task
         context['ti'].xcom_push(key=f'df_alert_{metric_batch_name}', value=df_alert.to_dict('records'))

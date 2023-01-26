@@ -19,6 +19,41 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
+
+    def make_alert_lines(self, df_alert_metric, graph_symbol, anomaly_symbol, normal_symbol):
+            
+            df_alert_metric = df_alert_metric.sort_values(by='metric_timestamp', ascending=False)
+            x = df_alert_metric['metric_value'].round(2).values.tolist()
+            labels = (np.where(df_alert_metric['alert_status']==1,anomaly_symbol,normal_symbol) + (df_alert_metric['prob_anomaly_smooth'].round(2)*100).astype('int').astype('str') + '% ' + df_alert_metric['metric_timestamp'].values).to_list()
+            data = zip(labels,x)
+            graph_title = f"{df_alert_metric['metric_name'].unique()[0]} ({df_alert_metric['metric_timestamp'].min()} to {df_alert_metric['metric_timestamp'].max()})"
+    
+            graph = Pyasciigraph(
+                titlebar=' ',
+                graphsymbol=graph_symbol,
+                float_format='{0:,.2f}'
+                ).graph(graph_title, data)
+            lines = ''
+            for i, line in  enumerate(graph):
+                if i <= 1:
+                    lines += '\n' + line
+                else:
+                    lines += '\n' + f't={0-i+2}'.ljust(6, ' ') + line
+            
+            return lines
+
+    def make_qry_sql(self, metric_name, gcp_destination_dataset, gcp_ingest_destination_table_name, gcp_score_destination_table_name):
+        qry_sql = f"""
+        ```sql
+        select *
+        from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` m
+        join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` s
+        on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
+        where m.metric_name = '{ metric_name }'
+        order by m.metric_timestamp desc
+        ```
+        """
+        return qry_sql
         
     def execute(self, context: Any):
 
@@ -27,6 +62,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         gcp_ingest_destination_table_name = context['params']['gcp_ingest_destination_table_name']
         gcp_score_destination_table_name = context['params']['gcp_score_destination_table_name']
         alert_emails_to = context['params']['alert_emails_to']
+        alert_subject_emoji = context['params'].get('alert_subject_emoji','🔥')
         graph_symbol = context['params'].get('graph_symbol','~')
         anomaly_symbol = context['params'].get('anomaly_symbol','* ')
         normal_symbol = context['params'].get('normal_symbol','  ')
@@ -43,34 +79,25 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
             for metric_name in df_alert['metric_name'].unique():
 
                 df_alert_metric = df_alert[df_alert['metric_name'] == metric_name]
-                df_alert_metric = df_alert_metric.sort_values(by='metric_timestamp', ascending=False)
-                x = df_alert_metric['metric_value'].round(2).values.tolist()
-                labels = (np.where(df_alert_metric['alert_status']==1,anomaly_symbol,normal_symbol) + (df_alert_metric['prob_anomaly_smooth'].round(2)*100).astype('int').astype('str') + '% ' + df_alert_metric['metric_timestamp'].values).to_list()
-                data = zip(labels,x)
-                graph_title = f"{metric_name} ({df_alert_metric['metric_timestamp'].min()} to {df_alert_metric['metric_timestamp'].max()})"
+                metric_timestamp_max = df_alert_metric['metric_timestamp'].max()
 
-                graph = Pyasciigraph(
-                    titlebar=' ',
-                    graphsymbol=graph_symbol,
-                    float_format='{0:,.2f}'
-                    ).graph(graph_title, data)
-                lines = ''
-                for i, line in  enumerate(graph):
-                    if i <= 1:
-                        lines += '\n' + line
-                    else:
-                        lines += '\n' + f't={0-i+2}'.ljust(6, ' ') + line
-                
-                qry_sql = f"""
-```sql
-select *
-from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` m
-join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` s
-on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
-where m.metric_name = '{ metric_name }'
-order by m.metric_timestamp desc
-```
-                """
+                alert_lines = self.make_alert_lines(
+                    df_alert_metric=df_alert_metric,
+                    graph_symbol=graph_symbol,
+                    anomaly_symbol=anomaly_symbol,
+                    normal_symbol=normal_symbol
+                )
+
+                qry_sql = self.make_qry_sql(
+                    metric_name=metric_name,
+                    gcp_destination_dataset=gcp_destination_dataset,
+                    gcp_ingest_destination_table_name=gcp_ingest_destination_table_name,
+                    gcp_score_destination_table_name=gcp_score_destination_table_name
+                )
+
+                subject = f"{alert_subject_emoji} [{metric_name}] looks anomalous ({metric_timestamp_max}) {alert_subject_emoji}"
+                email_message = alert_lines + f'\n\n{qry_sql}'
+                email_message = f"<pre>{email_message}</pre>"
 
                 buf = io.BytesIO()
                 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(20, 10), gridspec_kw={'height_ratios': [2, 1]})
@@ -89,13 +116,11 @@ order by m.metric_timestamp desc
                     ff.write(buf.getvalue()) 
                 buf.close()
 
-                subject = f"🤷 [{metric_name}] looks anomalous ({df_alert_metric['metric_timestamp'].max()}) 🤷"
-                email_message = lines + f'\n\n{qry_sql}'
-                email_message = f"<pre>{email_message}</pre>"
-
                 send_email(
                     to=alert_emails_to,
                     subject=subject,
                     html_content=email_message,
                     files=[fname]
                 )
+
+                self.log.info(f'alert sent, subject={subject}, to={alert_emails_to}')
