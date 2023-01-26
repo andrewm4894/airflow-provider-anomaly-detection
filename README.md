@@ -2,6 +2,7 @@
 
 Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with Apache Airflow.
 
+How it works in a nutshell:
 1. Create and express your metrics via SQL queries.
 1. Some YAML configuration fun.
 1. Receive useful alerts when metrics look anomalous.
