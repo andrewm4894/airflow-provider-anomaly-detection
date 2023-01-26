@@ -14,6 +14,8 @@ Smoothed anomaly score is shown as a `%` and any flagged anomalies are marked wi
 
 Below is the sql to pull the metric in question for investigation.
 
+### Alert Text (ascii art yay!)
+
 ```
 🤷 [some_metric_last1h] looks anomalous (2023-01-25 16:00:00) 🤷
 ```
@@ -46,15 +48,17 @@ t=-22 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~              2,651.00    37% 2023-0
 t=-23 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~            2,797.00    39% 2023-01-24 16:00:00
 t=-24 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             2,739.00    40% 2023-01-24 15:30:00
 
-
+```
+```sql
 select *
 from `metrics.metrics` m
 join `metrics.metrics_scored` s
 on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
 where m.metric_name = 'some_metric_last1h'
 order by m.metric_timestamp desc
-
 ```
+
+### Alert Chart
 
 A slightly more fancy chart is also attached to alert emails. The top line graph shows the metric values over time. The bottom line graph shows the smoothed anomaly score over time along with the alert status for any flagged anomalies where the smoothed anomaly score passes the threshold.
 
