@@ -6,6 +6,8 @@ Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with
 1. Some YAML configuration fun.
 1. Receive useful alerts when metrics look anomalous.
 
+## Example Alert
+
 Example output of an alert. Horizontal bar chart used to show metric values over time. 
 Smoothed anomaly score is shown as a `%` and any flagged anomalies are marked with `*`.
 
