@@ -19,7 +19,7 @@ select
   m.metric_name, 
   m.metric_value,
   -- avg prob anomaly if any duplicate scores for whatever reason
-  avg(m.prob_anomaly) as prob_anomaly,
+  avg(s.prob_anomaly) as prob_anomaly,
   rank() over (partition by m.metric_name order by m.metric_timestamp desc) as metric_recency_rank
 from 
   `{{ params.gcp_destination_dataset }}.{{ params.gcp_ingest_destination_table_name }}` m
