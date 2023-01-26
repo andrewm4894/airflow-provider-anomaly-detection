@@ -46,13 +46,18 @@ class MetricBatchScoreOperator(BaseOperator):
         
             metrics_distinct = df_score['metric_name'].unique()
 
+            # create empty dataframe to store scores
             df_scores = pd.DataFrame()
 
             for metric_name in metrics_distinct:
 
+                # filter for metric_name
                 df_X = df_score[df_score['metric_name'] == metric_name]
+
+                # drop columns that are not needed for scoring
                 X = df_X[[col for col in df_X.columns if col.startswith('x_')]].values
 
+                # load model from GCS
                 storage_client = storage.Client(credentials=gcp_credentials)
                 bucket = storage_client.get_bucket(gcs_model_bucket)
                 model_name = f'{metric_name}.pkl'
@@ -62,10 +67,15 @@ class MetricBatchScoreOperator(BaseOperator):
                     with open(temp.name, 'rb') as f:
                         model = pickle.load(f)
                 
+                # score
                 scores = model.predict_proba(X)
+                
+                # create dataframe with scores
                 df_scores_tmp = pd.DataFrame(scores, columns=['prob_normal','prob_anomaly'])
                 df_scores_tmp['metric_name'] = metric_name
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
+                
+                # append to df_scores
                 df_scores = df_scores.append(df_scores_tmp)
 
             print(f'writing {len(df_scores)} rows into {score_destination_table_full_name}')
@@ -93,9 +103,12 @@ class MetricBatchScoreOperator(BaseOperator):
                     ],
                 )
 
+            # insert scores into bigquery
             bigquery_hook.insert_all(
                 dataset_id=gcp_destination_dataset,
                 table_id=gcp_score_destination_table_name,
                 rows=df_scores.to_dict('records'),
                 project_id=gcp_project_id,
             )
+
+            self.log.info(f'{len(df_scores)} rows written into {gcp_project_id}.{gcp_destination_dataset}.{score_destination_table_full_name}')

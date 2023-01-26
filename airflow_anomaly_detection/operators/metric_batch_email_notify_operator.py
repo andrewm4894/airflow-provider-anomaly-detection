@@ -1,4 +1,5 @@
 import io
+import os
 from typing import Any
 
 from airflow.models.baseoperator import BaseOperator
@@ -43,6 +44,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
             return lines
 
     def make_qry_sql(self, metric_name, gcp_destination_dataset, gcp_ingest_destination_table_name, gcp_score_destination_table_name):
+        
         qry_sql = f"""
         ```sql
         select *
@@ -53,7 +55,29 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         order by m.metric_timestamp desc
         ```
         """
+
         return qry_sql
+
+    def make_temp_chart_file(self, df_alert_metric, metric_name, alert_status_threshold):
+
+        buf = io.BytesIO()
+        fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(20, 10), gridspec_kw={'height_ratios': [2, 1]})
+        df_plot = df_alert_metric.set_index('metric_timestamp').sort_index()
+        ax1 = df_plot['metric_value'].plot(title=metric_name, ax=axes[0], style='-o')
+        x_axis = ax1.axes.get_xaxis()
+        x_axis.set_visible(False)
+        ax2 = df_plot[['prob_anomaly_smooth','alert_status']].plot(title='anomaly_score', ax=axes[1], rot=45, style=['--','o'], x_compat=True)
+        ax2.axhline(alert_status_threshold, color='lightgrey', linestyle='-.')
+        ax2.set_xticks(range(len(df_plot)))
+        ax2.set_xticklabels([f'{item}' for item in df_plot.index.tolist()], rotation=45)
+        fig.savefig(buf, format='jpg', bbox_inches='tight', dpi=250)
+        fp = tempfile.NamedTemporaryFile(prefix=f'{metric_name}_', delete=False)
+        fname = f"{fp.name}.jpg"
+        with open(fname,'wb') as ff:
+            ff.write(buf.getvalue()) 
+        buf.close()
+
+        return fp, fname
         
     def execute(self, context: Any):
 
@@ -99,22 +123,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 email_message = alert_lines + f'\n\n{qry_sql}'
                 email_message = f"<pre>{email_message}</pre>"
 
-                buf = io.BytesIO()
-                fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(20, 10), gridspec_kw={'height_ratios': [2, 1]})
-                df_plot = df_alert_metric.set_index('metric_timestamp').sort_index()
-                ax1 = df_plot['metric_value'].plot(title=metric_name, ax=axes[0], style='-o')
-                x_axis = ax1.axes.get_xaxis()
-                x_axis.set_visible(False)
-                ax2 = df_plot[['prob_anomaly_smooth','alert_status']].plot(title='anomaly_score', ax=axes[1], rot=45, style=['--','o'], x_compat=True)
-                ax2.axhline(alert_status_threshold, color='lightgrey', linestyle='-.')
-                ax2.set_xticks(range(len(df_plot)))
-                ax2.set_xticklabels([f'{item}' for item in df_plot.index.tolist()], rotation=45)
-                fig.savefig(buf, format='jpg', bbox_inches='tight', dpi=250)
-                fp = tempfile.NamedTemporaryFile(prefix=f'{metric_name}_')
-                fname = f"{fp.name}.jpg"
-                with open(fname,'wb') as ff:
-                    ff.write(buf.getvalue()) 
-                buf.close()
+                fp, fname = self.make_temp_chart_file(df_alert_metric, metric_name, alert_status_threshold)
 
                 send_email(
                     to=alert_emails_to,
@@ -122,5 +131,9 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                     html_content=email_message,
                     files=[fname]
                 )
+
+                # remove temp file
+                fp.close()
+                os.remove(fname)
 
                 self.log.info(f'alert sent, subject={subject}, to={alert_emails_to}')
