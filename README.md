@@ -12,8 +12,6 @@ How it works in a nutshell:
 Example output of an alert. Horizontal bar chart used to show metric values over time. 
 Smoothed anomaly score is shown as a `%` and any flagged anomalies are marked with `*`.
 
-Below is the sql to pull the metric in question for investigation.
-
 ### Alert Text (ascii art yay!)
 
 ```
@@ -49,6 +47,9 @@ t=-23 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~            2,797.00    39% 2023-0
 t=-24 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             2,739.00    40% 2023-01-24 15:30:00
 
 ```
+
+Below is the sql to pull the metric in question for investigation (this is included in the alert for convenience).
+
 ```sql
 select *
 from `metrics.metrics` m
