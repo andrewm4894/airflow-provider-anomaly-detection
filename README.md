@@ -15,7 +15,7 @@ Smoothed anomaly score is shown as a `%` and any flagged anomalies are marked wi
 ### Alert Text (ascii art yay!)
 
 ```
-🤷 [some_metric_last1h] looks anomalous (2023-01-25 16:00:00) 🤷
+🔥 [some_metric_last1h] looks anomalous (2023-01-25 16:00:00) 🔥
 ```
 ```
 some_metric_last1h (2023-01-24 15:30:00 to 2023-01-25 16:00:00)
