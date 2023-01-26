@@ -23,6 +23,7 @@ from
 where
   metric_batch_name = '{{ params.metric_batch_name }}'
   and
+  -- limit the data to the last {{ params.max_n_days_ago }} days for efficiency
   metric_timestamp >= timestamp_sub(timestamp('{{ ts }}'), interval {{ params.max_n_days_ago }} day)
 ),
 
@@ -32,6 +33,7 @@ select
   metric_timestamp,
   metric_name,
   metric_recency_rank,
+  -- lag the metric value by 0, 1, 2, ..., {{ params.preprocess_n_lags }}
   {% for lag_n in range(params.preprocess_n_lags + 2) %}
   lag(metric_value, {{ lag_n }}) over (partition by metric_name order by metric_timestamp) as x_metric_value_lag{{ lag_n }},
   {% endfor %}
@@ -42,15 +44,18 @@ from
 select
   metric_timestamp,
   metric_name,
+  -- take difference between the metric value and the lagged metric value
   {% for lag_n in range(params.preprocess_n_lags + 1) %}
   x_metric_value_lag{{ lag_n }} - x_metric_value_lag{{ lag_n + 1 }} as x_metric_value_lag{{ lag_n }}_diff,
   {% endfor %}
 from 
   metric_batch_preprocessed_data
 where
+  -- limit to non-null feature vectors
   {% for lag_n in range(params.preprocess_n_lags + 2) %}
   x_metric_value_lag{{ lag_n }} is not null
   and
   {% endfor %}
+  -- limit to the last {{ params.max_n }} rows which will be used for training and scoring
   metric_recency_rank <= {{ params.max_n }}
 ;
