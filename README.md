@@ -63,7 +63,7 @@ order by m.metric_timestamp desc
 
 A slightly more fancy chart is also attached to alert emails. The top line graph shows the metric values over time. The bottom line graph shows the smoothed anomaly score over time along with the alert status for any flagged anomalies where the smoothed anomaly score passes the threshold.
 
-![alert-chart-example](/img/alert-chart-example.png)
+![alert-chart-example](https://raw.githubusercontent.com/andrewm4894/airflow-provider-anomaly-detection/main/img/alert-chart-example.png)
 
 ## Getting Started
 
