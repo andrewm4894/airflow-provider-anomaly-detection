@@ -33,7 +33,8 @@ default_args = {
     'email': ['youremail@example.com']
 }
 dag_folder_name = 'anomaly-detection-dag'
-source_dir = f'{os.getcwd()}/dags/{dag_folder_name}/'
+dags_folder = os.getenv('AIRFLOW__CORE__DAGS_FOLDER', '/opt/airflow/dags')
+source_dir = f"{dags_folder}/{dag_folder_name}"
 config_dir = f'{source_dir}/config'
 sql_dir = f'{source_dir}/sql'
 
