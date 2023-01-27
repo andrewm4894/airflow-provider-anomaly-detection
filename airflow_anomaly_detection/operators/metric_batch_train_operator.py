@@ -1,3 +1,5 @@
+"""Runs some sql to generate preprocessed training data and trains a model per metric_name."""
+
 from typing import Sequence, Any
 
 from airflow.models.baseoperator import BaseOperator
@@ -11,7 +13,7 @@ from google.cloud import storage
 
 class MetricBatchTrainOperator(BaseOperator):
     """
-    Runs some sql to generate preprocessed training data.
+    Runs some sql to generate preprocessed training data and trains a model per metric_name.
 
     :param preprocess_sql: sql to be executed when preprocessing the metrics for training
     :type preprocess_sql: str
@@ -60,4 +62,4 @@ class MetricBatchTrainOperator(BaseOperator):
                     model_name = f'{metric_name}.pkl'
                     blob = bucket.blob(f'models/{model_name}')
                     blob.upload_from_filename(temp.name)
-                    print(f'trained model {model_name} has been uploaded to gs://{gcs_model_bucket}/models/{model_name}')
+                    self.log.info(f'trained model {model_name} has been uploaded to gs://{gcs_model_bucket}/models/{model_name}')

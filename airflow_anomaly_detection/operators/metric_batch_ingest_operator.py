@@ -1,3 +1,5 @@
+"""Operator to ingest a batch of metrics into BigQuery."""
+
 from typing import Sequence, Any
 
 from airflow.models.baseoperator import BaseOperator

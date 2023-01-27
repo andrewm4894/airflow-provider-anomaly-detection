@@ -1,3 +1,5 @@
+"""Runs some sql to generate preprocessed scoring data and uses a model per metric_name to score the data."""
+
 from typing import Sequence, Any
 
 from airflow.models.baseoperator import BaseOperator
@@ -11,7 +13,7 @@ import pandas as pd
 
 class MetricBatchScoreOperator(BaseOperator):
     """
-    Runs some sql to generate preprocessed scoring data.
+    Runs some sql to generate preprocessed scoring data and uses a model per metric_name to score the data.
 
     :param preprocess_sql: sql to be executed when preprocessing the metrics for scoring
     :type preprocess_sql: str
@@ -77,8 +79,6 @@ class MetricBatchScoreOperator(BaseOperator):
                 
                 # append to df_scores
                 df_scores = df_scores.append(df_scores_tmp)
-
-            print(f'writing {len(df_scores)} rows into {score_destination_table_full_name}')
 
             # check if table exists and if not create it and partition by metric_timestamp
             if not bigquery_hook.table_exists(

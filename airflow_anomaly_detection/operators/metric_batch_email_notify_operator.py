@@ -1,3 +1,5 @@
+"""Runs logic to package up and email anomalies."""
+
 import io
 import os
 from typing import Any
@@ -54,7 +56,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         where m.metric_name = '{ metric_name }'
         order by m.metric_timestamp desc
         ```
-        """
+        """.lstrip()
 
         return qry_sql
 
@@ -120,7 +122,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 )
 
                 subject = f"{alert_subject_emoji} [{metric_name}] looks anomalous ({metric_timestamp_max}) {alert_subject_emoji}"
-                email_message = alert_lines + f'\n\n{qry_sql}'
+                email_message = alert_lines + f'\n\n{qry_sql.lstrip()}'
                 email_message = f"<pre>{email_message}</pre>"
 
                 fp, fname = self.make_temp_chart_file(df_alert_metric, metric_name, alert_status_threshold)

@@ -1,3 +1,5 @@
+"""Operator to flag anomalies in a metric batch."""
+
 from typing import Sequence, Any
 
 from airflow.models.baseoperator import BaseOperator
