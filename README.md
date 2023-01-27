@@ -72,6 +72,7 @@ Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anom
 ### Prerequisites
 
 * Currently only Google BiqQuery is supported as a data source. The plan is to add Snowflake next and then probably Redshift. PR's to add other data sources are very welcome (some refactoring probably needed).
+* Requirements are listed in [requirements.txt](requirements.txt).
 
 ### Installation
 
@@ -84,3 +85,11 @@ pip install airflow-provider-anomaly-detection
 ### Configuration
 
 See the example configuration files in the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/) folder. You can use a `defaults.yaml` or specific `<metric-batch>.yaml` for each metric batch if needed.
+
+### Docker
+
+YOu can use the docker compose file to spin up an airflow instance with the provider installed and the example dag available. This is useful for quickly trying it out locally.
+
+```bash
+docker-compose up
+```
