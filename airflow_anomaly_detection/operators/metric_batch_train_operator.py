@@ -1,6 +1,7 @@
 """Runs some sql to generate preprocessed training data and trains a model per metric_name."""
 
 from typing import Sequence, Any
+import os 
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
@@ -29,7 +30,7 @@ class MetricBatchTrainOperator(BaseOperator):
     def execute(self, context: Any):
         
         gcp_credentials = BigQueryHook(context['params']['gcp_connection_id']).get_client()._credentials
-        gcs_model_bucket = context['params']['gcs_model_bucket']
+        gcs_model_bucket = os.getenv('AIRFLOW_AD_GCS_MODEL_BUCKET', context['params']['gcs_model_bucket'])
         model_type = context['params'].get('model_type','iforest')
         model_params = context['params'].get('model_params',{'contamination' : 0.1})
 

@@ -87,7 +87,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         gcp_destination_dataset = context['params']['gcp_destination_dataset']
         gcp_ingest_destination_table_name = context['params']['gcp_ingest_destination_table_name']
         gcp_score_destination_table_name = context['params']['gcp_score_destination_table_name']
-        alert_emails_to = context['params']['alert_emails_to']
+        alert_emails_to = os.getenv('AIRFLOW_ALERT_EMAILS', context['params']['alert_emails_to']).split(',')
         alert_subject_emoji = context['params'].get('alert_subject_emoji','🔥')
         graph_symbol = context['params'].get('graph_symbol','~')
         anomaly_symbol = context['params'].get('anomaly_symbol','* ')
