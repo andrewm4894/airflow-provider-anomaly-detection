@@ -34,8 +34,8 @@ default_args = {
 }
 dag_folder_name = 'anomaly-detection-dag'
 source_dir = f'{os.getcwd()}/dags/{dag_folder_name}/'
-config_dir = f'{source_dir}/config/'
-sql_dir = f'{source_dir}/sql/'
+config_dir = f'{source_dir}/config'
+sql_dir = f'{source_dir}/sql'
 
 # get configs
 metric_batch_configs = get_metric_batch_configs(config_dir)
