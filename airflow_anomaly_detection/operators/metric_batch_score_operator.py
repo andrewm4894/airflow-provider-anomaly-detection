@@ -1,6 +1,7 @@
 """Runs some sql to generate preprocessed scoring data and uses a model per metric_name to score the data."""
 
 from typing import Sequence, Any
+import os
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
@@ -28,7 +29,7 @@ class MetricBatchScoreOperator(BaseOperator):
         
     def execute(self, context: Any):
         
-        gcs_model_bucket = context['params']['gcs_model_bucket']
+        gcs_model_bucket = os.getenv('AIRFLOW_AD_GCS_MODEL_BUCKET', context['params']['gcs_model_bucket'])
         gcp_destination_dataset = context['params']['gcp_destination_dataset']
         gcp_score_destination_table_name = context['params']['gcp_score_destination_table_name']
 
