@@ -30,7 +30,7 @@ from airflow_anomaly_detection.utils import get_metric_batch_configs, get_metric
 # params
 default_args = {
     'email_on_failure': True,
-    'email': ['youremail@example.com']
+    'email': os.getenv('AIRFLOW_ALERT_EMAILS', 'youremail@example.com').split(',')
 }
 dag_folder_name = 'anomaly-detection-dag'
 dags_folder = os.getenv('AIRFLOW__CORE__DAGS_FOLDER', '/opt/airflow/dags')
