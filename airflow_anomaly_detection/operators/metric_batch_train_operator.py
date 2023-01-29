@@ -1,7 +1,8 @@
 """Runs some sql to generate preprocessed training data and trains a model per metric_name."""
 
 from typing import Sequence, Any
-import os 
+import os
+import time
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
@@ -46,6 +47,7 @@ class MetricBatchTrainOperator(BaseOperator):
             metrics_distinct = df_train['metric_name'].unique()
 
             for metric_name in metrics_distinct:
+
                 X = df_train[df_train['metric_name'] == metric_name]
                 X = X[[col for col in X.columns if col.startswith('x_')]]
 
@@ -53,7 +55,11 @@ class MetricBatchTrainOperator(BaseOperator):
                     model = IForest(**model_params)
                 else:
                     raise ValueError(f'model_type {model_type} is not supported')
+                
+                time_start_train = time.time()
                 model.fit(X)
+                time_end_train = time.time()
+                train_time = time_end_train - time_start_train
 
                 with tempfile.NamedTemporaryFile() as temp:
                     pickle.dump(model, temp)
@@ -63,4 +69,4 @@ class MetricBatchTrainOperator(BaseOperator):
                     model_name = f'{metric_name}.pkl'
                     blob = bucket.blob(f'models/{model_name}')
                     blob.upload_from_filename(temp.name)
-                    self.log.info(f'trained model {model_name} has been uploaded to gs://{gcs_model_bucket}/models/{model_name}')
+                    self.log.info(f'trained model {model_name} (n={len(X)}, train_time={round(train_time,2)} secs) has been uploaded to gs://{gcs_model_bucket}/models/{model_name}')
