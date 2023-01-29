@@ -11,11 +11,11 @@ airflow_alerting_schedule_interval: '*/4 * * * *' # run lots to quickly build so
 airflow_start_date: '2023-01-16'
 train_max_n: 720
 train_max_n_days_ago: 30
-preprocess_n_lags: 2
+preprocess_n_lags: 3
 score_max_n: 1
 score_max_n_days_ago: 7
 alert_smooth_n: 3
 alert_status_threshold: 0.90
 alert_max_n: 72
 alert_max_n_days_ago: 7
-alert_window_last_n: 12
+alert_window_last_n: 3
