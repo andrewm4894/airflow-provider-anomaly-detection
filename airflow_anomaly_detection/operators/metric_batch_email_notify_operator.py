@@ -56,7 +56,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         where m.metric_name = '{ metric_name }'
         order by m.metric_timestamp desc
         ```
-        """.lstrip()
+        """.replace('        ','')
 
         return qry_sql
 
