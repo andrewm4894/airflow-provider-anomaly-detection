@@ -23,7 +23,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
 
-    def make_alert_lines(self, df_alert_metric, graph_symbol, anomaly_symbol, normal_symbol):
+    def make_alert_lines(self, df_alert_metric, graph_symbol, anomaly_symbol, normal_symbol, alert_float_format):
             
             df_alert_metric = df_alert_metric.sort_values(by='metric_timestamp', ascending=False)
             x = df_alert_metric['metric_value'].round(2).values.tolist()
@@ -34,7 +34,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
             graph = Pyasciigraph(
                 titlebar=' ',
                 graphsymbol=graph_symbol,
-                float_format='{0:,.2f}'
+                float_format=alert_float_format
                 ).graph(graph_title, data)
             lines = ''
             for i, line in  enumerate(graph):
@@ -92,6 +92,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         graph_symbol = context['params'].get('graph_symbol','~')
         anomaly_symbol = context['params'].get('anomaly_symbol','* ')
         normal_symbol = context['params'].get('normal_symbol','  ')
+        alert_float_format = context['params'].get('alert_float_format','{0:,.0f}')
         alert_status_threshold = context['params']['alert_status_threshold']
 
         data_alert = context['ti'].xcom_pull(key=f'df_alert_{metric_batch_name}')
@@ -111,7 +112,8 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                     df_alert_metric=df_alert_metric,
                     graph_symbol=graph_symbol,
                     anomaly_symbol=anomaly_symbol,
-                    normal_symbol=normal_symbol
+                    normal_symbol=normal_symbol,
+                    alert_float_format=alert_float_format
                 )
 
                 qry_sql = self.make_qry_sql(
