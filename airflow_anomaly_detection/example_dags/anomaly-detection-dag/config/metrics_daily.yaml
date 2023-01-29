@@ -1,9 +1,13 @@
 metric_batch_name: metrics_daily
 metric_batch_description: daily metrics from various sources
-airflow_ingest_schedule_interval: '30 6 * * *'
-airflow_training_schedule_interval: '30 7 * * *'
-airflow_scoring_schedule_interval: '30 8 * * *'
-airflow_alerting_schedule_interval: '30 9 * * *'
+#airflow_ingest_schedule_interval: '30 6 * * *' # more realistic schedule
+#airflow_training_schedule_interval: '30 7 * * *' # more realistic schedule
+#airflow_scoring_schedule_interval: '30 8 * * *' # more realistic schedule
+#airflow_alerting_schedule_interval: '30 9 * * *' # more realistic schedule
+airflow_ingest_schedule_interval: '*/2 * * * *' # run lots to quickly build some data in example dag
+airflow_training_schedule_interval: '*/15 * * * *' # run lots to quickly build some data in example dag
+airflow_scoring_schedule_interval: '*/3 * * * *' # run lots to quickly build some data in example dag
+airflow_alerting_schedule_interval: '*/4 * * * *' # run lots to quickly build some data in example dag
 airflow_start_date: '2023-01-16'
 train_max_n: 90
 train_max_n_days_ago: 90

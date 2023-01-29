@@ -2,7 +2,7 @@
 # you can overwrite the defaults by defining whatever you want in <metric-batch>.yaml files.
 dag_name_prefix: anomalydetection_ # a useful prefix for the dags created by this provider.
 gcp_connection_id: google_cloud_default # a gcp connection to use.
-gcp_destination_dataset: metrics # dataset name to write metrics to.
+gcp_destination_dataset: develop # dataset name to write metrics to.
 gcp_ingest_destination_table_name: metrics # table name to write metrics to.
 gcp_score_destination_table_name: metrics_scored # table name to write scored metrics to.
 gcs_model_bucket: some-gcs-bucket # a gcs bucket where trained models will be stored, one per metric.

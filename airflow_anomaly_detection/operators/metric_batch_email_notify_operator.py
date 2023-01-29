@@ -125,6 +125,9 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 email_message = alert_lines + f'\n\n{qry_sql.lstrip()}'
                 email_message = f"<pre>{email_message}</pre>"
 
+                self.log.info(subject)
+                self.log.info(email_message)
+
                 fp, fname = self.make_temp_chart_file(df_alert_metric, metric_name, alert_status_threshold)
 
                 send_email(
@@ -139,3 +142,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 os.remove(fname)
 
                 self.log.info(f'alert sent, subject={subject}, to={alert_emails_to}')
+
+        else:
+
+            self.log.info(f'no alert, metric_batch_name={metric_batch_name}')
