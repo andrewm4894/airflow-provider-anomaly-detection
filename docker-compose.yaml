@@ -69,6 +69,7 @@ x-airflow-common:
   volumes:
     - ./airflow_anomaly_detection/example_dags/anomaly-detection-dag:/opt/airflow/dags/anomaly-detection-dag
     - ./airflow_anomaly_detection:/opt/airflow/plugins/airflow_anomaly_detection
+    - ./logs:/opt/airflow/logs
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on

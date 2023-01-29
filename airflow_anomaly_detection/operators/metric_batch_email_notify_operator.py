@@ -53,8 +53,8 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         from `{ gcp_destination_dataset }.{ gcp_ingest_destination_table_name }` m
         join `{ gcp_destination_dataset }.{ gcp_score_destination_table_name }` s
         on m.metric_name = s.metric_name and m.metric_timestamp = s.metric_timestamp
-        where m.metric_name = '{ metric_name }'
-        order by m.metric_timestamp desc
+        where date(m.metric_timestamp) >= date_sub(current_date(), interval 7 day) and m.metric_name = '{ metric_name }'
+        order by m.metric_timestamp desc limit 100
         ```
         """.replace('        ','')
 
