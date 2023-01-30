@@ -20,7 +20,7 @@ from airflow_anomaly_detection.operators.metric_batch_train_operator import Metr
 from airflow_anomaly_detection.operators.metric_batch_score_operator import MetricBatchScoreOperator
 from airflow_anomaly_detection.operators.metric_batch_alert_operator import MetricBatchAlertOperator
 from airflow_anomaly_detection.operators.metric_batch_email_notify_operator import MetricBatchEmailNotifyOperator
-from airflow_anomaly_detection.utils import get_metric_batch_configs, get_metric_batch_config_defaults
+from airflow_anomaly_detection.utils import get_metric_batch_configs
 
 
 ##########################################
@@ -39,8 +39,7 @@ config_dir = f'{source_dir}/config'
 sql_dir = f'{source_dir}/sql'
 
 # get configs
-metric_batch_configs = get_metric_batch_configs(config_dir)
-metric_batch_config_defaults = get_metric_batch_config_defaults(config_dir)
+metric_batch_config_defaults, metric_batch_configs = get_metric_batch_configs(config_dir)
 
 ##########################################
 # GENERATE DAGS
