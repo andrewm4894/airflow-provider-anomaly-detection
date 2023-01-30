@@ -12,6 +12,8 @@ How it works in a nutshell:
 Example output of an alert. Horizontal bar chart used to show metric values over time. 
 Smoothed anomaly score is shown as a `%` and any flagged anomalies are marked with `*`.
 
+In the example below you can see that the anomaly score is elevated when the metric dips and also when it spikes.
+
 ### Alert Text (ascii art yay!)
 
 ```
