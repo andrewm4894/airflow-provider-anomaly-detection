@@ -1,11 +1,11 @@
 # Anomaly Detection with Apache Airflow
 
-Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/) via this community Airflow [Provider](https://airflow.apache.org/docs/apache-airflow-providers/#provider-packages) package.
+Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/).
 
 How it works in a nutshell:
-1. Create and express your metrics via SQL queries.
-1. Some YAML configuration fun.
-1. Receive useful alerts when metrics look anomalous.
+1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/metrics/metrics_hourly.sql)).
+1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/metrics_hourly.yaml)).
+1. Receive useful alerts when metrics look anomalous (example [here](#example-alert)).
 
 ## Example Alert
 
@@ -88,8 +88,8 @@ See the example configuration files in the [example dag](https://github.com/andr
 
 ### Docker
 
-YOu can use the docker compose file to spin up an airflow instance with the provider installed and the example dag available. This is useful for quickly trying it out locally.
+You can use the docker compose file to spin up an airflow instance with the provider installed and the example dag available. This is useful for quickly trying it out locally. It will mount the local folders (you can see this in [`docker-compose.yaml`](./docker-compose.yaml)) into the container so you can make changes to the code or configs and see them reflected in the running airflow instance.
 
 ```bash
-docker-compose up
+docker compose up -d
 ```

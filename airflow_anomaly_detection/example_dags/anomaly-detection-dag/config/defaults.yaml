@@ -28,7 +28,7 @@ score_max_n: 1 # max number of records to score.
 score_max_n_days_ago: 7 # max number of days to score.
 score_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in scoring, otherwise ignore.
 alert_smooth_n: 3 # number of records to smooth over when smoothing anomaly score prior to alerting.
-alert_status_threshold: 0.90 # threshold for the smoothed anomaly score for alerting on.
+alert_status_threshold: 0.9 # threshold for the smoothed anomaly score for alerting on.
 alert_max_n: 72 # max number of records to alert on.
 alert_max_n_days_ago: 7 # max number of days to alert on.
 alert_window_last_n: 12 # only alert if anomalies fall within the last n records.
