@@ -39,7 +39,11 @@ config_dir = f'{source_dir}/config'
 sql_dir = f'{source_dir}/sql'
 
 # get configs
-metric_batch_config_defaults, metric_batch_configs = get_metric_batch_configs(config_dir)
+metric_batch_configs = get_metric_batch_configs(config_dir)
+
+# read defaults
+with open(f'{config_dir}/defaults.yaml') as yaml_file:
+    metric_batch_config_defaults = yaml.safe_load(yaml_file)
 
 ##########################################
 # GENERATE DAGS
