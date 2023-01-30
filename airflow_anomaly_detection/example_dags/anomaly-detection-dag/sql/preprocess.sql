@@ -17,7 +17,8 @@ metric_batch_recency_ranked as
 (
 select 
   *,
-  rank() over (partition by metric_name order by metric_timestamp desc) as metric_recency_rank  
+  rank() over (partition by metric_name order by metric_timestamp desc) as metric_recency_rank,
+  max(metric_timestamp) over (partition by metric_name) as metric_timestamp_max
 from 
   `{{ params.gcp_destination_dataset }}.{{ params.gcp_ingest_destination_table_name }}`
 where
@@ -33,6 +34,7 @@ select
   metric_timestamp,
   metric_name,
   metric_recency_rank,
+  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago
   -- lag the metric value by 0, 1, 2, ..., {{ params.preprocess_n_lags }}
   {% for lag_n in range(params.preprocess_n_lags + 2) %}
   lag(metric_value, {{ lag_n }}) over (partition by metric_name order by metric_timestamp) as x_metric_value_lag{{ lag_n }},
@@ -58,4 +60,7 @@ where
   {% endfor %}
   -- limit to the last {{ params.max_n }} rows which will be used for training and scoring
   metric_recency_rank <= {{ params.max_n }}
+  and
+  -- only include metrics last updated less than {{ params.metric_last_updated_hours_ago_max }} hours ago
+  metric_last_updated_hours_ago <= {{ params.metric_last_updated_hours_ago_max }}
 ;

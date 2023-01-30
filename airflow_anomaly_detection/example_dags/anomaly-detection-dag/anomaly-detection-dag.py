@@ -119,7 +119,8 @@ for metric_batch_config_file in metric_batch_configs:
                 **metric_batch_config,
                 **{
                     'max_n': metric_batch_config.get('train_max_n', 1000),
-                    'max_n_days_ago': metric_batch_config.get('train_max_n_days_ago', 7)
+                    'max_n_days_ago': metric_batch_config.get('train_max_n_days_ago', 7),
+                    'metric_last_updated_hours_ago_max': metric_batch_config.get('train_metric_last_updated_hours_ago_max', 24),
                 },
             }
         )
@@ -150,7 +151,8 @@ for metric_batch_config_file in metric_batch_configs:
                 **metric_batch_config,
                 **{
                     'max_n': metric_batch_config.get('score_max_n', 1),
-                    'max_n_days_ago': metric_batch_config.get('score_max_n_days_ago', 2)
+                    'max_n_days_ago': metric_batch_config.get('score_max_n_days_ago', 2),
+                    'metric_last_updated_hours_ago_max': metric_batch_config.get('score_metric_last_updated_hours_ago_max', 24),
                 },
             },
         )
