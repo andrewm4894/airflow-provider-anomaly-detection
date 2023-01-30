@@ -111,3 +111,6 @@ class MetricBatchScoreOperator(BaseOperator):
             )
 
             self.log.info(f'{len(df_scores)} rows written into {gcp_project_id}.{gcp_destination_dataset}.{gcp_score_destination_table_name}')
+
+        else:
+            self.log.info('No data to score')

@@ -69,7 +69,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         ax1 = df_plot['metric_value'].plot(title=metric_name, ax=axes[0], style='-o')
         x_axis = ax1.axes.get_xaxis()
         x_axis.set_visible(False)
-        ax2 = df_plot[['prob_anomaly_smooth','alert_status']].plot(title='anomaly_score', ax=axes[1], rot=45, style=['--','o'], x_compat=True)
+        ax2 = df_plot[['prob_anomaly_smooth','alert_status']].plot(title='anomaly_score smooth', ax=axes[1], rot=45, style=['--','o'], x_compat=True)
         ax2.axhline(alert_status_threshold, color='lightgrey', linestyle='-.')
         ax2.set_xticks(range(len(df_plot)))
         ax2.set_xticklabels([f'{item}' for item in df_plot.index.tolist()], rotation=45)
@@ -97,6 +97,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         alert_status_threshold = context['params'].get('alert_status_threshold',0.9)
         alert_airflow_fail_on_alert = context['params'].get('alert_airflow_fail_on_alert',False)
 
+        # get df_alert from xcom
         data_alert = context['ti'].xcom_pull(key=f'df_alert_{metric_batch_name}')
         df_alert = pd.DataFrame(data_alert)
         df_alert = df_alert.dropna()

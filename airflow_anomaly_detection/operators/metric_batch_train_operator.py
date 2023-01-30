@@ -70,3 +70,6 @@ class MetricBatchTrainOperator(BaseOperator):
                     blob = bucket.blob(f'models/{model_name}')
                     blob.upload_from_filename(temp.name)
                     self.log.info(f'trained model {model_name} (n={len(X)}, train_time={round(train_time,2)} secs) has been uploaded to gs://{gcs_model_bucket}/models/{model_name}')
+
+        else:
+            self.log.info('no training data available')
