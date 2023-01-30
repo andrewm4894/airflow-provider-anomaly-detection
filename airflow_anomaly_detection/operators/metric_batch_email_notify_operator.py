@@ -6,6 +6,7 @@ from typing import Any
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.utils.email import send_email
+from airflow.exceptions import AirflowException
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -94,6 +95,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         normal_symbol = context['params'].get('normal_symbol','  ')
         alert_float_format = context['params'].get('alert_float_format','{0:,.0f}')
         alert_status_threshold = context['params'].get('alert_status_threshold',0.9)
+        alert_airflow_fail_on_alert = context['params'].get('alert_airflow_fail_on_alert',False)
 
         data_alert = context['ti'].xcom_pull(key=f'df_alert_{metric_batch_name}')
         df_alert = pd.DataFrame(data_alert)
@@ -144,6 +146,9 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
                 os.remove(fname)
 
                 self.log.info(f'alert sent, subject={subject}, to={alert_emails_to}')
+
+                if alert_airflow_fail_on_alert:
+                    raise AirflowException(f'{subject}{email_message}')  
 
         else:
 
