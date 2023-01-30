@@ -34,7 +34,8 @@ select
   metric_timestamp,
   metric_name,
   metric_recency_rank,
-  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago
+  -- calculate the number of hours since the metric was last updated
+  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago,
   -- lag the metric value by 0, 1, 2, ..., {{ params.preprocess_n_lags }}
   {% for lag_n in range(params.preprocess_n_lags + 2) %}
   lag(metric_value, {{ lag_n }}) over (partition by metric_name order by metric_timestamp) as x_metric_value_lag{{ lag_n }},

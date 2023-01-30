@@ -23,8 +23,8 @@ class MetricBatchIngestOperator(BaseOperator):
         
     def execute(self, context: Any):
         
-        gcp_destination_dataset = context['params']['gcp_destination_dataset']
-        gcp_ingest_destination_table_name = context['params']['gcp_ingest_destination_table_name']
+        gcp_destination_dataset = context['params'].get('gcp_destination_dataset', 'develop')
+        gcp_ingest_destination_table_name = context['params'].get('gcp_ingest_destination_table_name', 'metrics')
         gcp_ingest_write_disposition = context['params'].get('gcp_ingest_write_disposition', 'WRITE_APPEND')
         
         bigquery_hook = BigQueryHook(context['params']['gcp_connection_id'])

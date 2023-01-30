@@ -30,10 +30,8 @@ class MetricBatchScoreOperator(BaseOperator):
     def execute(self, context: Any):
         
         gcs_model_bucket = os.getenv('AIRFLOW_AD_GCS_MODEL_BUCKET', context['params']['gcs_model_bucket'])
-        gcp_destination_dataset = context['params']['gcp_destination_dataset']
-        gcp_score_destination_table_name = context['params']['gcp_score_destination_table_name']
-
-        score_destination_table_full_name = f'{gcp_destination_dataset}.{gcp_score_destination_table_name}'
+        gcp_destination_dataset = context['params'].get('gcp_destination_dataset', 'develop')
+        gcp_score_destination_table_name = context['params'].get('gcp_score_destination_table_name', 'metrics_scored')
 
         bigquery_hook = BigQueryHook(context['params']['gcp_connection_id'])
         bigquery_client = bigquery_hook.get_client()
@@ -112,4 +110,4 @@ class MetricBatchScoreOperator(BaseOperator):
                 project_id=gcp_project_id,
             )
 
-            self.log.info(f'{len(df_scores)} rows written into {gcp_project_id}.{gcp_destination_dataset}.{score_destination_table_full_name}')
+            self.log.info(f'{len(df_scores)} rows written into {gcp_project_id}.{gcp_destination_dataset}.{gcp_score_destination_table_name}')

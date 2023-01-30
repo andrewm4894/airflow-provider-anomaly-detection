@@ -84,16 +84,16 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
     def execute(self, context: Any):
 
         metric_batch_name = context['params']['metric_batch_name']
-        gcp_destination_dataset = context['params']['gcp_destination_dataset']
-        gcp_ingest_destination_table_name = context['params']['gcp_ingest_destination_table_name']
-        gcp_score_destination_table_name = context['params']['gcp_score_destination_table_name']
+        gcp_destination_dataset = context['params'].get('gcp_destination_dataset','develop')
+        gcp_ingest_destination_table_name = context['params'].get('gcp_ingest_destination_table_name','metrics')
+        gcp_score_destination_table_name = context['params'].get('gcp_score_destination_table_name','metrics_scored')
         alert_emails_to = os.getenv('AIRFLOW_ALERT_EMAILS', context['params']['alert_emails_to']).split(',')
         alert_subject_emoji = context['params'].get('alert_subject_emoji','🔥')
         graph_symbol = context['params'].get('graph_symbol','~')
         anomaly_symbol = context['params'].get('anomaly_symbol','* ')
         normal_symbol = context['params'].get('normal_symbol','  ')
         alert_float_format = context['params'].get('alert_float_format','{0:,.0f}')
-        alert_status_threshold = context['params']['alert_status_threshold']
+        alert_status_threshold = context['params'].get('alert_status_threshold',0.9)
 
         data_alert = context['ti'].xcom_pull(key=f'df_alert_{metric_batch_name}')
         df_alert = pd.DataFrame(data_alert)
