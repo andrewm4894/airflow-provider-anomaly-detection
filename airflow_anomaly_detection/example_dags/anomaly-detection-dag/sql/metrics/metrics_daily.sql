@@ -19,7 +19,7 @@ user_signups as
 SELECT 
   timestamp('{{ ts }}') as metric_timestamp,
   'user_signups_last24h' as metric_name,
-  rand()*1000 as metric_value 
+  if(rand()>=0.90,rand()*10,rand()*1000) as metric_value  
 ),
 
 sales_revenue as
@@ -27,7 +27,7 @@ sales_revenue as
 SELECT 
   timestamp('{{ ts }}') as metric_timestamp,
   'sales_revenue_last24h' as metric_name,
-  rand()*1000 as metric_value 
+  if(rand()>=0.99,rand()*10000,rand()*1000) as metric_value 
 ),
 
 metrics_daily as

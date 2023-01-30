@@ -18,7 +18,7 @@ frontend_events as
 SELECT 
   timestamp('{{ ts }}') as metric_timestamp,
   'fe_pageviews_last1h' as metric_name,
-  rand()*1000 as metric_value 
+  if(rand()>=0.95,rand()*10000,rand()*1000) as metric_value 
 ),
 
 backend_events as
@@ -26,7 +26,7 @@ backend_events as
 SELECT 
   timestamp('{{ ts }}') as metric_timestamp,
   'be_events_last1h' as metric_name,
-  rand()*1000 as metric_value 
+  if(rand()>=0.90,rand()*10,rand()*1000) as metric_value 
 ),
 
 metrics_hourly as
