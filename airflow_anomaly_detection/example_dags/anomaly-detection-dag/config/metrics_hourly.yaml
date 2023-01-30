@@ -19,3 +19,4 @@ alert_status_threshold: 0.90
 alert_max_n: 72
 alert_max_n_days_ago: 7
 alert_window_last_n: 3
+alert_metric_last_updated_hours_ago_max: 24

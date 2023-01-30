@@ -32,3 +32,4 @@ alert_max_n_days_ago: 7 # max number of days to alert on.
 alert_window_last_n: 12 # only alert if anomalies fall within the last n records.
 alert_subject_emoji: '🔥' # emoji to use in alert emails.
 alert_float_format: '{0:,.0f}'
+alert_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in alerting, otherwise ignore.

@@ -42,7 +42,9 @@ metrics_scored_smooth as
 select 
   *,
   -- take a smoothed average of the probability of anomaly
-  avg(prob_anomaly) over (partition by metric_name order by metric_recency_rank desc RANGE BETWEEN {{ params.alert_smooth_n }} PRECEDING AND CURRENT ROW) as prob_anomaly_smooth
+  avg(prob_anomaly) over (partition by metric_name order by metric_recency_rank desc RANGE BETWEEN {{ params.alert_smooth_n }} PRECEDING AND CURRENT ROW) as prob_anomaly_smooth,
+  -- get the max timestamp for each metric
+  max(metric_timestamp) over (partition by metric_name) as metric_timestamp_max
 from 
   metrics_scored_recency_ranked
 ),
@@ -65,7 +67,9 @@ metrics_alert_flagged as
 select
   *,
   -- generate a flag indicating whether the metric has an alert in the last {{ params.alert_max_n }} steps
-  max(alert_status) over (partition by metric_name) as has_alert_in_max_n
+  max(alert_status) over (partition by metric_name) as has_alert_in_max_n,
+  -- get the number of hours since the metric was last updated
+  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago
 from
   metrics_alert_flags
 where
@@ -93,6 +97,7 @@ select
   metric_value,
   prob_anomaly_smooth,
   alert_status,
+  metric_last_updated_hours_ago
 from 
   metrics_alert_flagged
 left outer join
@@ -102,6 +107,9 @@ on
 where
   -- only include metrics that have an alert in the last {{ params.alert_window_last_n }} steps
   has_alert_in_window_last_n = 1
+  and
+  -- only include metrics last updated less than {{ params.alert_metric_last_updated_hours_ago_max }} hours ago
+  metric_last_updated_hours_ago <= {{ params.alert_metric_last_updated_hours_ago_max }}
 order by 
   metric_name, metric_timestamp
 ;
