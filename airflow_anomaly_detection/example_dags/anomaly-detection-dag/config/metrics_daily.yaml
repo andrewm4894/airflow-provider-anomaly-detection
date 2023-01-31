@@ -9,8 +9,8 @@ airflow_training_schedule_interval: '*/15 * * * *' # run lots to quickly build s
 airflow_scoring_schedule_interval: '*/3 * * * *' # run lots to quickly build some data in example dag
 airflow_alerting_schedule_interval: '*/4 * * * *' # run lots to quickly build some data in example dag
 airflow_start_date: '2023-01-16'
-train_max_n: 90
-train_max_n_days_ago: 90
+train_max_n: 180
+train_max_n_days_ago: 180
 preprocess_n_lags: 3
 score_max_n: 1
 score_max_n_days_ago: 14
