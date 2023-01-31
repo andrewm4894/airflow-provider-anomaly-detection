@@ -15,7 +15,7 @@ preprocess_n_lags: 3
 score_max_n: 1
 score_max_n_days_ago: 7
 alert_smooth_n: 3
-alert_status_threshold: 0.9
+alert_status_threshold: 0.8
 alert_max_n: 72
 alert_max_n_days_ago: 7
 alert_window_last_n: 3
