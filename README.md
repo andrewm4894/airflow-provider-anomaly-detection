@@ -102,3 +102,21 @@ You can use the docker compose file to spin up an airflow instance with the prov
 ```bash
 docker compose up -d
 ```
+
+### Anomaly Gallery
+
+Look at some of these beautiful anomalies!
+
+_(these are all real anomalies from various business metrics as i have been dogfooding this at work for a little while now)_
+
+Sharpe drop in metric followed by an elevated anomaly score.
+
+![sharp_drop_example](/img/sharp_drop_example.jpg)
+
+A subtle change and some "saw tooth" behaviour leading to an anomaly.
+
+![saw_tooth_example](/img/saw_tooth_example.jpg)
+
+A bump and spike example - two anomalies for one!
+
+![bump_and_spike_example](/img/bump_and_spike_example.jpg)
