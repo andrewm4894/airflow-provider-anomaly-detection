@@ -2,10 +2,17 @@
 
 Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/).
 
-How it works in a nutshell:
+How it works in a 🌰:
 1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/metrics/metrics_hourly.sql)).
 1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/metrics_hourly.yaml)).
 1. Receive useful alerts when metrics look anomalous (example [here](#example-alert)).
+
+The [example dag](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/anomaly-detection-dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics create in step 1 above):
+
+- `<dag_name_prefix><metric_batch_name>_ingestion<dag_name_suffix>`: Ingests the metric data into a table in BigQuery.
+- `<dag_name_prefix><metric_batch_name>_training<dag_name_suffix>`: Uses recent metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to train an anomaly detection model for each metric and save it to GCS.
+- `<dag_name_prefix><metric_batch_name>_scoring<dag_name_suffix>`: Uses latest metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to score recent data using latest trained model.
+- `<dag_name_prefix><metric_batch_name>_alerting<dag_name_suffix>`: Uses recent scores and [`alert_status.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/alert_status.sql) to trigger an alert email if alert conditions are met.
 
 ## Example Alert
 
