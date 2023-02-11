@@ -2,6 +2,20 @@
 
 Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/).
 
+- [How](#how)
+- [Example Alert](#example-alert)
+  - [Alert Text (ascii art yay!)](#alert-text-ascii-art-yay)
+  - [Alert Chart](#alert-chart)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Docker](#docker)
+- [Anomaly Gallery](#anomaly-gallery)
+
+
+## How
+
 How it works in a 🌰:
 1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/metrics/metrics_hourly.sql)).
 1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/metrics_hourly.yaml)).
@@ -103,7 +117,7 @@ You can use the docker compose file to spin up an airflow instance with the prov
 docker compose up -d
 ```
 
-### Anomaly Gallery
+## Anomaly Gallery
 
 Look at some of these beautiful anomalies!
 
