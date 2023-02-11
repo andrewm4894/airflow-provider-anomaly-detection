@@ -40,7 +40,7 @@ select
   metric_timestamp,
   'metrics_hourly' as metric_batch_name,
   metric_name,
-  safe_cast(metric_value as float64) as metric_value 
+  ifnull(safe_cast(metric_value as float64),0.0) as metric_value 
 from 
   metrics_hourly
 ;
