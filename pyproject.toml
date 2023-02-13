@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "airflow-provider-anomaly-detection"
-version = "0.0.16"
+version = attr: airflow_provider_anomaly_detection.__version__
 authors = [
   { name="andrewm4894", email="andrewm4894@gmail.com" },
 ]
