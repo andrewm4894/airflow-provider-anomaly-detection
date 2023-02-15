@@ -13,7 +13,6 @@ Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with
   - [Docker](#docker)
 - [Anomaly Gallery](#anomaly-gallery)
 
-
 ## How
 
 How it works in a 🌰:
