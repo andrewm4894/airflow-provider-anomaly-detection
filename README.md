@@ -2,10 +2,10 @@
 
 Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/).
 
-![PyPI](https://img.shields.io/pypi/v/airflow-provider-anomaly-detection)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/airflow-provider-anomaly-detection)
-![GitHub](https://img.shields.io/github/license/andrewm4894/airflow-provider-anomaly-detection)
-![GitHub Repo stars](https://img.shields.io/github/stars/andrewm4894/airflow-provider-anomaly-detection?style=social)
+[![PyPI](https://img.shields.io/pypi/v/airflow-provider-anomaly-detection)](https://pypi.org/project/airflow-provider-anomaly-detection/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/airflow-provider-anomaly-detection)](https://pypi.org/project/airflow-provider-anomaly-detection/)
+[![GitHub](https://img.shields.io/github/license/andrewm4894/airflow-provider-anomaly-detection)](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/LICENSE)
+[![GitHub Repo stars](https://img.shields.io/github/stars/andrewm4894/airflow-provider-anomaly-detection?style=social)](https://github.com/andrewm4894/airflow-provider-anomaly-detection/stargazers)
 
 - [How](#how)
 - [Example Alert](#example-alert)
