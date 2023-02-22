@@ -32,6 +32,8 @@ The [example dag](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/
 - `<dag_name_prefix><metric_batch_name>_scoring<dag_name_suffix>`: Uses latest metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to score recent data using latest trained model.
 - `<dag_name_prefix><metric_batch_name>_alerting<dag_name_suffix>`: Uses recent scores and [`alert_status.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/alert_status.sql) to trigger an alert email if alert conditions are met.
 
+![airflow-dags-ui](/img/airflow-dags-ui.jpg)
+
 ## Example Alert
 
 Example output of an alert. Horizontal bar chart used to show metric values over time. 
