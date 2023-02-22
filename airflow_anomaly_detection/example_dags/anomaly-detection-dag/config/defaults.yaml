@@ -1,6 +1,6 @@
 # general defaults you might want to apply to each metric batch.
 # you can overwrite the defaults by defining whatever you want in <metric-batch>.yaml files.
-dag_name_prefix: anomalydetection_ # a useful prefix for the dags created by this provider.
+dag_name_prefix: eg_anomalydetection_ # a useful prefix for the dags created by this provider.
 gcp_connection_id: google_cloud_default # a gcp connection to use.
 gcp_destination_dataset: develop # dataset name to write metrics to.
 gcp_ingest_destination_table_name: metrics # table name to write metrics to.
