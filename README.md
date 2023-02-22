@@ -138,3 +138,7 @@ A subtle change and some "saw tooth" behaviour leading to an anomaly.
 A bump and spike example - two anomalies for one!
 
 ![bump_and_spike_example](/img/bump_and_spike_example.jpg)
+
+An example of a regular ETL timing delay.
+
+![etl_delay_example](/img/etl_delay_example.jpg)
