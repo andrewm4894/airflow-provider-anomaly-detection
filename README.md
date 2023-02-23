@@ -32,6 +32,8 @@ The [example dag](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/
 - `<dag_name_prefix><metric_batch_name>_scoring<dag_name_suffix>`: Uses latest metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to score recent data using latest trained model.
 - `<dag_name_prefix><metric_batch_name>_alerting<dag_name_suffix>`: Uses recent scores and [`alert_status.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/alert_status.sql) to trigger an alert email if alert conditions are met.
 
+![airflow-dags-ui](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/airflow-dags-ui.jpg?raw=true)
+
 ## Example Alert
 
 Example output of an alert. Horizontal bar chart used to show metric values over time. 
@@ -129,12 +131,16 @@ _(these are all real anomalies from various business metrics as i have been dogf
 
 Sharpe drop in metric followed by an elevated anomaly score.
 
-![sharp_drop_example](/img/sharp_drop_example.jpg)
+![sharp_drop_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/sharp_drop_example.jpg?raw=true)
 
 A subtle change and some "saw tooth" behaviour leading to an anomaly.
 
-![saw_tooth_example](/img/saw_tooth_example.jpg)
+![saw_tooth_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/saw_tooth_example.jpg?raw=true)
 
 A bump and spike example - two anomalies for one!
 
-![bump_and_spike_example](/img/bump_and_spike_example.jpg)
+![bump_and_spike_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/bump_and_spike_example.jpg?raw=true)
+
+An example of a regular ETL timing delay.
+
+![etl_delay_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/etl_delay_example.jpg?raw=true)
