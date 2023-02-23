@@ -131,16 +131,16 @@ _(these are all real anomalies from various business metrics as i have been dogf
 
 Sharpe drop in metric followed by an elevated anomaly score.
 
-![sharp_drop_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/sharp_drop_example.jpg?raw=true)
+![sharp_drop_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/sharp_drop_example.jpg?raw=true)
 
 A subtle change and some "saw tooth" behaviour leading to an anomaly.
 
-![saw_tooth_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/saw_tooth_example.jpg?raw=true)
+![saw_tooth_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/saw_tooth_example.jpg?raw=true)
 
 A bump and spike example - two anomalies for one!
 
-![bump_and_spike_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/bump_and_spike_example.jpg?raw=true)
+![bump_and_spike_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/bump_and_spike_example.jpg?raw=true)
 
 An example of a regular ETL timing delay.
 
-![etl_delay_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/etl_delay_example.jpg?raw=true)
+![etl_delay_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/etl_delay_example.jpg?raw=true)
