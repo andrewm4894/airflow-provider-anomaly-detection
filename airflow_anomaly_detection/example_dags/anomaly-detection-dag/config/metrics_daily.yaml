@@ -18,5 +18,5 @@ alert_smooth_n: 3
 alert_status_threshold: 0.8
 alert_max_n: 30
 alert_max_n_days_ago: 30
-alert_window_last_n: 3
+alert_window_last_n: 1
 alert_metric_last_updated_hours_ago_max: 24
