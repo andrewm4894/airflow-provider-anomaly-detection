@@ -15,6 +15,20 @@ import tempfile
 from ascii_graph import Pyasciigraph
 
 
+class ConditionalFormat:
+    def __init__(self, threshold=1):
+        self.threshold = threshold
+
+    def format(self, value):
+        if isinstance(value, (int, float)):
+            if value < self.threshold:
+                return '${:,.2f}'.format(value)
+            else:
+                return '${:,.0f}'.format(value)
+        else:
+            raise TypeError(f"Unsupported type: {type(value)}")
+
+
 class MetricBatchEmailNotifyOperator(BaseOperator):
     """
     Runs logic to package up and email anomalies.
@@ -93,7 +107,7 @@ class MetricBatchEmailNotifyOperator(BaseOperator):
         graph_symbol = context['params'].get('graph_symbol','~')
         anomaly_symbol = context['params'].get('anomaly_symbol','* ')
         normal_symbol = context['params'].get('normal_symbol','  ')
-        alert_float_format = context['params'].get('alert_float_format','{0:,.0f}')
+        alert_float_format = context['params'].get('alert_float_format',ConditionalFormat())
         alert_status_threshold = context['params'].get('alert_status_threshold',0.9)
         alert_airflow_fail_on_alert = context['params'].get('alert_airflow_fail_on_alert',False)
 
