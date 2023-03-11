@@ -22,9 +22,9 @@ class ConditionalFormat:
     def format(self, value):
         if isinstance(value, (int, float)):
             if value < self.threshold:
-                return '${:,.2f}'.format(value)
+                return '{:,.2f}'.format(value)
             else:
-                return '${:,.0f}'.format(value)
+                return '{:,.0f}'.format(value)
         else:
             raise TypeError(f"Unsupported type: {type(value)}")
 
