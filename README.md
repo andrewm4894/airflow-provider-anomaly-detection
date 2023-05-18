@@ -125,7 +125,7 @@ docker compose up -d
 
 ## Anomaly Gallery
 
-Look at some of these beautiful anomalies!
+Look at some of these beautiful anomalies! (More at [`/anomaly-gallery/README.md`](/anomaly-gallery/README.md))
 
 _(these are all real anomalies from various business metrics as i have been dogfooding this at work for a little while now)_
 
