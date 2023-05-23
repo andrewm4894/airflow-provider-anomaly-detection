@@ -2,9 +2,9 @@
 
 In this folder is an example dag using this provider and some example sql and config files.
 
-# Dag Structure
+## Dag Structure
 
-- `anomaly-detection-dag.py` - The dag file.
+- `bigquery_anomaly_detection_dag.py` - The dag file.
 - `config/` - Directory containing the config files.
 - `config/defaults.yaml` - The default config file.
 - `config/metrics_hourly.yaml` - The config file for the hourly metrics batch.

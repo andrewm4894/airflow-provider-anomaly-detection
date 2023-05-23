@@ -67,7 +67,7 @@ x-airflow-common:
     SENDGRID_MAIL_FROM: ${SENDGRID_MAIL_FROM:-}
     AIRFLOW_AD_GCS_MODEL_BUCKET: ${AIRFLOW_AD_GCS_MODEL_BUCKET:-}
   volumes:
-    - ./airflow_anomaly_detection/example_dags/anomaly-detection-dag:/opt/airflow/dags/anomaly-detection-dag
+    - ./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag:/opt/airflow/dags/bigquery_anomaly_detection_dag
     - ./airflow_anomaly_detection:/opt/airflow/plugins/airflow_anomaly_detection
     - ./logs:/opt/airflow/logs
   user: "${AIRFLOW_UID:-50000}:0"
