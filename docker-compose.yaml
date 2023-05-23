@@ -65,7 +65,9 @@ x-airflow-common:
     AIRFLOW_FAILURE_EMAILS: ${AIRFLOW_FAILURE_EMAILS:-}
     AIRFLOW_ALERT_EMAILS: ${AIRFLOW_ALERT_EMAILS:-}
     SENDGRID_MAIL_FROM: ${SENDGRID_MAIL_FROM:-}
+    SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
     AIRFLOW_AD_GCS_MODEL_BUCKET: ${AIRFLOW_AD_GCS_MODEL_BUCKET:-}
+    AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: ${AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT:-}
   volumes:
     - ./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag:/opt/airflow/dags/bigquery_anomaly_detection_dag
     - ./airflow_anomaly_detection:/opt/airflow/plugins/airflow_anomaly_detection

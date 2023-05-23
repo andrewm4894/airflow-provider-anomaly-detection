@@ -6,7 +6,7 @@ from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
 
-class MetricBatchIngestOperator(BaseOperator):
+class BigQueryMetricBatchIngestOperator(BaseOperator):
     """
     Runs some sql to generate some metrics.
 

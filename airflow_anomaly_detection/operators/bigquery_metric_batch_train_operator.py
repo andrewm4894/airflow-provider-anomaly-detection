@@ -13,7 +13,7 @@ import tempfile
 from google.cloud import storage
 
 
-class MetricBatchTrainOperator(BaseOperator):
+class BigQueryMetricBatchTrainOperator(BaseOperator):
     """
     Runs some sql to generate preprocessed training data and trains a model per metric_name.
 
