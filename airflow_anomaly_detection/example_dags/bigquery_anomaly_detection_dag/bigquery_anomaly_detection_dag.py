@@ -32,7 +32,7 @@ default_args = {
     'email_on_failure': True,
     'email': os.getenv('AIRFLOW_ALERT_EMAILS', 'youremail@example.com').split(',')
 }
-dag_folder_name = 'anomaly-detection-dag'
+dag_folder_name = 'bigquery_anomaly_detection_dag'
 #dags_folder = os.getenv('AIRFLOW__CORE__DAGS_FOLDER', '/opt/airflow/dags')
 dags_folder = '/home/airflow/gcs/dags/' # dags folder for composer
 source_dir = f"{dags_folder}/{dag_folder_name}"

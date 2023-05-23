@@ -21,16 +21,16 @@ Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with
 ## How
 
 How it works in a 🌰:
-1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/metrics/metrics_hourly.sql)).
-1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/metrics_hourly.yaml)).
+1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/metrics/metrics_hourly.sql)).
+1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/metrics_hourly.yaml)).
 1. Receive useful alerts when metrics look anomalous (example [here](#example-alert)).
 
-The [example dag](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/anomaly-detection-dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics create in step 1 above):
+The [example dag](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/bigquery_anomaly_detection_dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics create in step 1 above):
 
 - `<dag_name_prefix><metric_batch_name>_ingestion<dag_name_suffix>`: Ingests the metric data into a table in BigQuery.
-- `<dag_name_prefix><metric_batch_name>_training<dag_name_suffix>`: Uses recent metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to train an anomaly detection model for each metric and save it to GCS.
-- `<dag_name_prefix><metric_batch_name>_scoring<dag_name_suffix>`: Uses latest metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/preprocess.sql) to score recent data using latest trained model.
-- `<dag_name_prefix><metric_batch_name>_alerting<dag_name_suffix>`: Uses recent scores and [`alert_status.sql`](/airflow_anomaly_detection/example_dags/anomaly-detection-dag/sql/alert_status.sql) to trigger an alert email if alert conditions are met.
+- `<dag_name_prefix><metric_batch_name>_training<dag_name_suffix>`: Uses recent metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/preprocess.sql) to train an anomaly detection model for each metric and save it to GCS.
+- `<dag_name_prefix><metric_batch_name>_scoring<dag_name_suffix>`: Uses latest metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/preprocess.sql) to score recent data using latest trained model.
+- `<dag_name_prefix><metric_batch_name>_alerting<dag_name_suffix>`: Uses recent scores and [`alert_status.sql`](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/alert_status.sql) to trigger an alert email if alert conditions are met.
 
 ![airflow-dags-ui](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/img/airflow-dags-ui.jpg?raw=true)
 
@@ -96,7 +96,7 @@ A slightly more fancy chart is also attached to alert emails. The top line graph
 
 ## Getting Started
 
-Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/) to get started.
+Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/) to get started.
 
 ### Prerequisites
 
@@ -113,7 +113,7 @@ pip install airflow-provider-anomaly-detection
 
 ### Configuration
 
-See the example configuration files in the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/anomaly-detection-dag/config/) folder. You can use a `defaults.yaml` or specific `<metric-batch>.yaml` for each metric batch if needed.
+See the example configuration files in the [example dag](https://github.com/andrewm4894/airflow-provider-anomaly-detection/tree/main/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/) folder. You can use a `defaults.yaml` or specific `<metric-batch>.yaml` for each metric batch if needed.
 
 ### Docker
 
@@ -125,22 +125,22 @@ docker compose up -d
 
 ## Anomaly Gallery
 
-Look at some of these beautiful anomalies! (More at [`/anomaly-gallery/README.md`](/anomaly-gallery/README.md))
+Look at some of these beautiful anomalies! (More at [`/anomaly_gallery/README.md`](/anomaly_gallery/README.md))
 
 _(these are all real anomalies from various business metrics as i have been dogfooding this at work for a little while now)_
 
 Sharpe drop in metric followed by an elevated anomaly score.
 
-![sharp_drop_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/sharp_drop_example.jpg?raw=true)
+![sharp_drop_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly_gallery/sharp_drop_example.jpg?raw=true)
 
 A subtle change and some "saw tooth" behaviour leading to an anomaly.
 
-![saw_tooth_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/saw_tooth_example.jpg?raw=true)
+![saw_tooth_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly_gallery/saw_tooth_example.jpg?raw=true)
 
 A bump and spike example - two anomalies for one!
 
-![bump_and_spike_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/bump_and_spike_example.jpg?raw=true)
+![bump_and_spike_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly_gallery/bump_and_spike_example.jpg?raw=true)
 
 An example of a regular ETL timing delay.
 
-![etl_delay_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly-gallery/etl_delay_example.jpg?raw=true)
+![etl_delay_example](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/anomaly_gallery/etl_delay_example.jpg?raw=true)
