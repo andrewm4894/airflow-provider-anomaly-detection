@@ -15,10 +15,10 @@ import os
 import pendulum
 import yaml
 from airflow.decorators import dag
-from airflow_anomaly_detection.operators.metric_batch_ingest_operator import MetricBatchIngestOperator
-from airflow_anomaly_detection.operators.metric_batch_train_operator import MetricBatchTrainOperator
-from airflow_anomaly_detection.operators.metric_batch_score_operator import MetricBatchScoreOperator
-from airflow_anomaly_detection.operators.metric_batch_alert_operator import MetricBatchAlertOperator
+from airflow_anomaly_detection.operators.bigquery_metric_batch_ingest_operator import BigQueryMetricBatchIngestOperator
+from airflow_anomaly_detection.operators.bigquery_metric_batch_train_operator import BigQueryMetricBatchTrainOperator
+from airflow_anomaly_detection.operators.bigquery_metric_batch_score_operator import BigQueryMetricBatchScoreOperator
+from airflow_anomaly_detection.operators.bigquery_metric_batch_alert_operator import BigQueryMetricBatchAlertOperator
 from airflow_anomaly_detection.operators.metric_batch_email_notify_operator import MetricBatchEmailNotifyOperator
 from airflow_anomaly_detection.utils import get_metric_batch_configs
 
@@ -33,8 +33,8 @@ default_args = {
     'email': os.getenv('AIRFLOW_ALERT_EMAILS', 'youremail@example.com').split(',')
 }
 dag_folder_name = 'bigquery_anomaly_detection_dag'
-#dags_folder = os.getenv('AIRFLOW__CORE__DAGS_FOLDER', '/opt/airflow/dags')
-dags_folder = '/home/airflow/gcs/dags/' # dags folder for composer
+dags_folder = os.getenv('AIRFLOW__CORE__DAGS_FOLDER', '/opt/airflow/dags')
+#dags_folder = '/home/airflow/gcs/dags/' # dags folder for composer
 source_dir = f"{dags_folder}/{dag_folder_name}"
 config_dir = f'{source_dir}/config'
 sql_dir = f'{source_dir}/sql'
@@ -92,7 +92,7 @@ for metric_batch_config_file in metric_batch_configs:
     )
     def metric_ingestion_dag():
 
-        metric_batch_ingest = MetricBatchIngestOperator(
+        metric_batch_ingest = BigQueryMetricBatchIngestOperator(
             task_id=f'metric_batch_ingest_{metric_batch_name}',
             metric_batch_sql=metric_batch_sql
         )
@@ -116,7 +116,7 @@ for metric_batch_config_file in metric_batch_configs:
     )
     def metric_training_dag():
 
-        metric_batch_train = MetricBatchTrainOperator(
+        metric_batch_train = BigQueryMetricBatchTrainOperator(
             task_id=f'metric_batch_train_{metric_batch_name}',
             preprocess_sql=preprocess_sql,
             params={
@@ -148,7 +148,7 @@ for metric_batch_config_file in metric_batch_configs:
     )
     def metric_scoring_dag():
 
-        metric_batch_score = MetricBatchScoreOperator(
+        metric_batch_score = BigQueryMetricBatchScoreOperator(
             task_id=f'metric_batch_score_{metric_batch_name}',
             preprocess_sql=preprocess_sql,
             params={
@@ -179,7 +179,7 @@ for metric_batch_config_file in metric_batch_configs:
     )
     def metric_alerting_dag():
 
-        metric_batch_alert = MetricBatchAlertOperator(
+        metric_batch_alert = BigQueryMetricBatchAlertOperator(
             task_id=f'metric_batch_alert_{metric_batch_name}',
             alert_status_sql=alert_status_sql,
             params={

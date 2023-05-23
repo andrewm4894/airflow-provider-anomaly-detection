@@ -102,6 +102,8 @@ Check out the [example dag](https://github.com/andrewm4894/airflow-provider-anom
 
 * Currently only Google BiqQuery is supported as a data source. The plan is to add Snowflake next and then probably Redshift. PR's to add other data sources are very welcome (some refactoring probably needed).
 * Requirements are listed in [requirements.txt](requirements.txt).
+* You will need to have sendgrid_default connection setup in airflow to send emails. You can also use the `sendgrid_api_key` via environment variable if you prefer. See `.example.env` for more details.
+* You will need to have a `google_cloud_default` connection setup in airflow to pull data from bigquery. See `.example.env` for more details.
 
 ### Installation
 

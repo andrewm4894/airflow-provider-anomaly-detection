@@ -12,7 +12,7 @@ from google.cloud import storage
 import pandas as pd
 
 
-class MetricBatchScoreOperator(BaseOperator):
+class BigQueryMetricBatchScoreOperator(BaseOperator):
     """
     Runs some sql to generate preprocessed scoring data and uses a model per metric_name to score the data.
 

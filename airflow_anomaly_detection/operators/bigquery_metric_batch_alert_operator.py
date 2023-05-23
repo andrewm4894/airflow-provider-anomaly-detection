@@ -6,7 +6,7 @@ from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
 
-class MetricBatchAlertOperator(BaseOperator):
+class BigQueryMetricBatchAlertOperator(BaseOperator):
     """
     Runs some sql to flag anomalies.
 
