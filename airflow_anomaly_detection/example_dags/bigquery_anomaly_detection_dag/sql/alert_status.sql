@@ -83,6 +83,7 @@ select
   metric_name,
   -- generate a flag indicating whether the metric has an alert in the last {{ params.alert_window_last_n }} steps
   max(alert_status) as has_alert_in_window_last_n,
+  -- get the number of observations for each metric
   sum(1) as metric_name_n_observations
 from
   metrics_alert_flagged
