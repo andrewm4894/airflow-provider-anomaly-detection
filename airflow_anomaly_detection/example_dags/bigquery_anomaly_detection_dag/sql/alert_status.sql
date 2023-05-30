@@ -98,7 +98,6 @@ select
   metric_value,
   prob_anomaly_smooth,
   alert_status,
-  metric_last_updated_hours_ago
 from 
   metrics_alert_flagged
 left outer join
