@@ -82,7 +82,9 @@ metrics_alert_window_flagged as
 select
   metric_name,
   -- generate a flag indicating whether the metric has an alert in the last {{ params.alert_window_last_n }} steps
-  max(alert_status) as has_alert_in_window_last_n
+  max(alert_status) as has_alert_in_window_last_n,
+  -- get the number of observations for each metric
+  sum(1) as metric_name_n_observations
 from
   metrics_alert_flagged
 where
@@ -97,7 +99,6 @@ select
   metric_value,
   prob_anomaly_smooth,
   alert_status,
-  metric_last_updated_hours_ago
 from 
   metrics_alert_flagged
 left outer join
@@ -110,6 +111,9 @@ where
   and
   -- only include metrics last updated less than {{ params.alert_metric_last_updated_hours_ago_max }} hours ago
   metric_last_updated_hours_ago <= {{ params.alert_metric_last_updated_hours_ago_max }}
+  and
+  -- only include metrics with at least {{ params.alert_metric_name_n_observations_min }} observations
+  metric_name_n_observations >= {{ params.alert_metric_name_n_observations_min }}
 order by 
   metric_name, metric_timestamp
 ;

@@ -34,4 +34,5 @@ alert_max_n_days_ago: 7 # max number of days to alert on.
 alert_window_last_n: 1 # only alert if anomalies fall within the last n records.
 alert_subject_emoji: '🔥' # emoji to use in alert emails.
 alert_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in alerting, otherwise ignore.
+alert_metric_name_n_observations_min: 14 # min number of observations a metric must have to be considered for alerting.
 alert_airflow_fail_on_alert: False # whether to fail the alerting dag if an alert is triggered.
