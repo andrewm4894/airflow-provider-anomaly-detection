@@ -1,24 +1,25 @@
-name: Python Unit Tests
+name: Unit Tests
 
-on: [push, pull_request]  # Trigger the workflow on push or pull_request events
+on: [push, pull_request] 
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Checkout the repository code
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  # Specify the desired Python version
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Install project dependencies
+          pip install -r requirements.txt
 
       - name: Run unit tests
-        run: python -m unittest airflow_anomaly_detection/tests/operators/test_bigquery_metric_batch_alert_operator.py
+        run: |
+          python -m unittest airflow_anomaly_detection/tests/operators/test_bigquery_metric_batch_alert_operator.py
