@@ -78,10 +78,11 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
                 
                 if context['params'].get('log_scores', False):
+                    self.log.info(df_X.transpose().to_string())
                     self.log.info(df_scores_tmp.transpose().to_string())
                 
                 # append to df_scores
-                df_scores = df_scores.append(df_scores_tmp)
+                df_scores = pd.concat([df_scores, df_scores_tmp])
 
             # check if table exists and if not create it and partition by metric_timestamp
             if not bigquery_hook.table_exists(
