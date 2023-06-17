@@ -24,4 +24,3 @@ operators:
   - module: airflow_anomaly_detection.operators.bigquery_metric_batch_train_operator.BigQueryMetricBatchScoreOperator
   - module: airflow_anomaly_detection.operators.bigquery_metric_batch_alert_operator.BigQueryMetricBatchAlertOperator
   - module: airflow_anomaly_detection.operators.metric_batch_alert_operator.MetricBatchEmailNotifyOperator
-
