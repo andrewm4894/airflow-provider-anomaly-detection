@@ -77,7 +77,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp['metric_name'] = metric_name
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
                 
-                if context['params'].get('log_scores', False):
+                if context['params'].get('airflow_log_scores', False):
                     self.log.info(df_X.transpose().to_string())
                     self.log.info(df_scores_tmp.transpose().to_string())
                 
