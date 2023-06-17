@@ -78,7 +78,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
                 
                 if context['params'].get('log_scores', False):
-                    self.log.info(df_scores_tmp)
+                    self.log.info(df_scores_tmp.to_string())
                 
                 # append to df_scores
                 df_scores = df_scores.append(df_scores_tmp)
