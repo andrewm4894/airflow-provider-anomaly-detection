@@ -7,6 +7,7 @@ as features for training and scoring.
 The output needs to be a table with the following columns:
 - metric_timestamp
 - metric_name
+- metric_value
 - x_... (features)
 
 */
@@ -33,6 +34,7 @@ metric_batch_preprocessed_data as
 select 
   metric_timestamp,
   metric_name,
+  metric_value,
   metric_recency_rank,
   -- calculate the number of hours since the metric was last updated
   timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago,
@@ -47,6 +49,7 @@ from
 select
   metric_timestamp,
   metric_name,
+  metric_value,
   -- take difference between the metric value and the lagged metric value
   {% for lag_n in range(params.preprocess_n_lags + 1) %}
   x_metric_value_lag{{ lag_n }} - x_metric_value_lag{{ lag_n + 1 }} as x_metric_value_lag{{ lag_n }}_diff,

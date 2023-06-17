@@ -76,11 +76,14 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp = pd.DataFrame(scores, columns=['prob_normal','prob_anomaly'])
                 df_scores_tmp['metric_name'] = metric_name
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
-                
+
                 if context['params'].get('airflow_log_scores', False):
-                    self.log.info(df_X.transpose().to_string())
-                    self.log.info(df_scores_tmp.transpose().to_string())
-                
+                    self.log.info(
+                        pd.concat(
+                            [df_X.transpose(), df_scores_tmp[['prob_normal','prob_anomaly']].transpose()]
+                        ).to_string()
+                    )
+
                 # append to df_scores
                 df_scores = pd.concat([df_scores, df_scores_tmp])
 
