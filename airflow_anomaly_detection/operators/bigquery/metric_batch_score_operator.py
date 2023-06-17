@@ -54,7 +54,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
             for metric_name in metrics_distinct:
 
                 # filter for metric_name
-                df_X = df_score[df_score['metric_name'] == metric_name]
+                df_X = df_score[df_score['metric_name'] == metric_name].reset_index()
 
                 # drop columns that are not needed for scoring
                 X = df_X[[col for col in df_X.columns if col.startswith('x_')]].values
@@ -76,12 +76,14 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp = pd.DataFrame(scores, columns=['prob_normal','prob_anomaly'])
                 df_scores_tmp['metric_name'] = metric_name
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
-                
-                if context['params'].get('log_scores', False):
-                    self.log.info(df_scores_tmp.transpose().to_string())
-                
+
+                if context['params'].get('airflow_log_scores', False):
+                    self.log.info(
+                        pd.concat([df_X, df_scores_tmp[['prob_normal','prob_anomaly']]],axis=1).transpose().to_string()
+                    )
+
                 # append to df_scores
-                df_scores = df_scores.append(df_scores_tmp)
+                df_scores = pd.concat([df_scores, df_scores_tmp])
 
             # check if table exists and if not create it and partition by metric_timestamp
             if not bigquery_hook.table_exists(
