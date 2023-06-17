@@ -54,7 +54,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
             for metric_name in metrics_distinct:
 
                 # filter for metric_name
-                df_X = df_score[df_score['metric_name'] == metric_name]
+                df_X = df_score[df_score['metric_name'] == metric_name].reset_index()
 
                 # drop columns that are not needed for scoring
                 X = df_X[[col for col in df_X.columns if col.startswith('x_')]].values
@@ -79,12 +79,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
 
                 if context['params'].get('airflow_log_scores', False):
                     self.log.info(
-                        pd.concat(
-                            [
-                                df_X.transpose().rename(columns={"0":"x"}, inplace=True), 
-                                df_scores_tmp[['prob_normal','prob_anomaly']].transpose().rename(columns={"0":"x"}, inplace=True)
-                            ]
-                        ).to_string()
+                        pd.concat([df_X, df_scores_tmp[['prob_normal','prob_anomaly']]],axis=1).transpose().to_string()
                     )
 
                 # append to df_scores
