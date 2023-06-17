@@ -50,6 +50,7 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
             # create empty dataframe to store scores
             df_scores = pd.DataFrame()
 
+            # process each metric_name
             for metric_name in metrics_distinct:
 
                 # filter for metric_name
@@ -75,6 +76,9 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 df_scores_tmp = pd.DataFrame(scores, columns=['prob_normal','prob_anomaly'])
                 df_scores_tmp['metric_name'] = metric_name
                 df_scores_tmp['metric_timestamp'] = df_X['metric_timestamp'].values
+                
+                if context['params'].get('log_scores', False):
+                    self.log.info(df_scores_tmp)
                 
                 # append to df_scores
                 df_scores = df_scores.append(df_scores_tmp)

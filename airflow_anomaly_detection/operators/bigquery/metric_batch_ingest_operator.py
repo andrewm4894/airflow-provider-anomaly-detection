@@ -22,6 +22,9 @@ class BigQueryMetricBatchIngestOperator(BaseOperator):
         self.metric_batch_sql = metric_batch_sql
         
     def execute(self, context: Any):
+        """
+        Executes `insert_job` to generate metrics.
+        """
         
         gcp_destination_dataset = context['params'].get('gcp_destination_dataset', 'develop')
         gcp_ingest_destination_table_name = context['params'].get('gcp_ingest_destination_table_name', 'metrics')
