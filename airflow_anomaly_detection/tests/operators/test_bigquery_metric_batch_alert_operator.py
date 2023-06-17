@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from pandas import DataFrame
-from airflow_anomaly_detection.operators.bigquery_metric_batch_alert_operator import BigQueryMetricBatchAlertOperator
+from airflow_anomaly_detection.operators.bigquery.metric_batch_alert_operator import BigQueryMetricBatchAlertOperator
 
 class TestBigQueryMetricBatchAlertOperator(unittest.TestCase):
 
