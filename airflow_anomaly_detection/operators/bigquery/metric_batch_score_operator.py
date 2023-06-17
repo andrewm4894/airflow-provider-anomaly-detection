@@ -80,7 +80,10 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 if context['params'].get('airflow_log_scores', False):
                     self.log.info(
                         pd.concat(
-                            [df_X.transpose(), df_scores_tmp[['prob_normal','prob_anomaly']].transpose()]
+                            [
+                                df_X.transpose().rename(columns={"0":"x"}, inplace=True), 
+                                df_scores_tmp[['prob_normal','prob_anomaly']].transpose().rename(columns={"0":"x"}, inplace=True)
+                            ]
                         ).to_string()
                     )
 
