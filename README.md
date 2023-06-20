@@ -22,7 +22,7 @@ Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with
 
 How it works in a 🌰:
 1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/metrics/metrics_hourly.sql)).
-1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/metrics_hourly.yaml)).
+1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/metrics_hourly.yaml), defaults [here](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/defaults.yaml)).
 1. Receive useful alerts when metrics look anomalous (example [here](#example-alert)).
 
 The [example dag](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/bigquery_anomaly_detection_dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics create in step 1 above):
