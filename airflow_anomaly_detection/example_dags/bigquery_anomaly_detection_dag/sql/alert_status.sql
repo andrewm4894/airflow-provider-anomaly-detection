@@ -55,6 +55,7 @@ select
   *,
   -- generate the alert status flag
   case
+    when lower('{{ params.debug_alert_always }}') = 'true' then 1
     when prob_anomaly_smooth >= {{ params.alert_status_threshold }} then 1
     else 0 
   end as alert_status 
