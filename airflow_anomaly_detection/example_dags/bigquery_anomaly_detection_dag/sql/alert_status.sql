@@ -85,13 +85,11 @@ metrics_alert_window_flagged as
 select
   metric_name,
   -- generate a flag indicating whether the metric has an alert in the last {{ params.alert_window_last_n }} steps
-  max(alert_status) as has_alert_in_window_last_n,
+  max(if(metric_recency_rank <= {{ params.alert_window_last_n }},alert_status,0) as has_alert_in_window_last_n,
   -- get the number of observations for each metric
   sum(1) as metric_name_n_observations
 from
-  metrics_alert_flagged
-where
-  metric_recency_rank <= {{ params.alert_window_last_n }}
+  metrics_alert_flagged  
 group by 1
 )
 
