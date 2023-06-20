@@ -55,7 +55,9 @@ select
   *,
   -- generate the alert status flag
   case
+    -- if debug_alert_always is true, then always generate an alert
     when lower('{{ params.debug_alert_always }}') = 'true' then 1
+    -- alert if the smoothed probability of anomaly is greater than or equal to {{ params.alert_status_threshold }}
     when prob_anomaly_smooth >= {{ params.alert_status_threshold }} then 1
     else 0 
   end as alert_status 
