@@ -13,7 +13,7 @@ normal_symbol: '  ' # symbol to use for flagging normal values in alert emails.
 model_type: iforest # a string to identify the PyOD model type to use.
 model_params: # params to be unpacked into the model constructor.
   contamination: 0.05
-  n_estimators: 100
+  n_estimators: 250
 # below params might be better set in <metric-batch>.yaml specific config files
 airflow_ingest_schedule_interval: '5 * * * *' # schedule for the ingest dag.
 airflow_training_schedule_interval: '30 8 * * *' # schedule for the training dag.
@@ -22,11 +22,11 @@ airflow_alerting_schedule_interval: '15 * * * *' # schedule for the alerting dag
 airflow_start_date: '2023-01-16' # start date for the dags.
 train_max_n: 720 # max number of records to train on.
 train_max_n_days_ago: 30 # max number of days to train on.
-train_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in training, otherwise ignore.
+train_metric_last_updated_hours_ago_max: 72 # max number of hours ago the metric was last updated to include in training, otherwise ignore.
 preprocess_n_lags: 2 # number of lags to create for each metric.
 score_max_n: 1 # max number of records to score.
 score_max_n_days_ago: 7 # max number of days to score.
-score_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in scoring, otherwise ignore.
+score_metric_last_updated_hours_ago_max: 48 # max number of hours ago the metric was last updated to include in scoring, otherwise ignore.
 score_fail_on_no_model: True # whether to fail the scoring dag if no model is found.
 alert_smooth_n: 3 # number of records to smooth over when smoothing anomaly score prior to alerting.
 alert_status_threshold: 0.9 # threshold for the smoothed anomaly score for alerting on.
@@ -34,7 +34,7 @@ alert_max_n: 72 # max number of records to alert on.
 alert_max_n_days_ago: 7 # max number of days to alert on.
 alert_window_last_n: 1 # only alert if anomalies fall within the last n records.
 alert_subject_emoji: '🔥' # emoji to use in alert emails.
-alert_metric_last_updated_hours_ago_max: 24 # max number of hours ago the metric was last updated to include in alerting, otherwise ignore.
+alert_metric_last_updated_hours_ago_max: 48 # max number of hours ago the metric was last updated to include in alerting, otherwise ignore.
 alert_metric_name_n_observations_min: 14 # min number of observations a metric must have to be considered for alerting.
 alert_airflow_fail_on_alert: False # whether to fail the alerting dag if an alert is triggered.
 airflow_log_scores: False # whether to log metrics scores to the airflow logs.
