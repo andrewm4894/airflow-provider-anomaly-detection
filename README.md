@@ -22,10 +22,10 @@ Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with
 
 How it works in a 🌰:
 1. Create and express your metrics via SQL queries (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/metrics/metrics_hourly.sql)).
-1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/metrics_hourly.yaml)).
+1. Some YAML configuration fun (example [here](./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/metrics_hourly.yaml), defaults [here](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/config/defaults.yaml)).
 1. Receive useful alerts when metrics look anomalous (example [here](#example-alert)).
 
-The [example dag](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/bigquery_anomaly_detection_dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics create in step 1 above):
+The [example dag](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/bigquery_anomaly_detection_dag.py) will create 4 dags for each "metric batch" (a metric batch is just the resulting table of 1 or more metrics created in step 1 above):
 
 - `<dag_name_prefix><metric_batch_name>_ingestion<dag_name_suffix>`: Ingests the metric data into a table in BigQuery.
 - `<dag_name_prefix><metric_batch_name>_training<dag_name_suffix>`: Uses recent metrics and [`preprocess.sql`](/airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag/sql/preprocess.sql) to train an anomaly detection model for each metric and save it to GCS.
