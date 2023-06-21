@@ -5,6 +5,7 @@ import os
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+from airflow.exceptions import AirflowException
 
 import pickle
 import tempfile
@@ -59,15 +60,23 @@ class BigQueryMetricBatchScoreOperator(BaseOperator):
                 # drop columns that are not needed for scoring
                 X = df_X[[col for col in df_X.columns if col.startswith('x_')]].values
 
-                # load model from GCS
-                storage_client = storage.Client(credentials=gcp_credentials)
-                bucket = storage_client.get_bucket(gcs_model_bucket)
-                model_name = f'{metric_name}.pkl'
-                blob = bucket.blob(f'models/{model_name}')
-                with tempfile.NamedTemporaryFile() as temp:
-                    blob.download_to_filename(temp.name)
-                    with open(temp.name, 'rb') as f:
-                        model = pickle.load(f)
+                try:
+                    # load model from GCS
+                    storage_client = storage.Client(credentials=gcp_credentials)
+                    bucket = storage_client.get_bucket(gcs_model_bucket)
+                    model_name = f'{metric_name}.pkl'
+                    blob = bucket.blob(f'models/{model_name}')
+                    with tempfile.NamedTemporaryFile() as temp:
+                        blob.download_to_filename(temp.name)
+                        with open(temp.name, 'rb') as f:
+                            model = pickle.load(f)
+                except Exception as e:
+                    self.log(f"An error occurred: {e}")
+                    if context['params'].get('airflow_fail_on_model_load_error', True):
+                        raise AirflowException(f"An error occurred: {e}")
+                    else:
+                        self.log.info(f"Skipping metric_name {metric_name}")
+                        continue
                 
                 # score
                 scores = model.predict_proba(X)
