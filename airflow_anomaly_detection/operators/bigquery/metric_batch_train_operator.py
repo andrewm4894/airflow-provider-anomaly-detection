@@ -50,6 +50,9 @@ class BigQueryMetricBatchTrainOperator(BaseOperator):
 
                 X = df_train[df_train['metric_name'] == metric_name]
                 X = X[[col for col in X.columns if col.startswith('x_')]]
+                
+                # shuffle X
+                X = X.sample(frac=1).reset_index(drop=True)
 
                 if model_type == 'iforest':
                     model = IForest(**model_params)

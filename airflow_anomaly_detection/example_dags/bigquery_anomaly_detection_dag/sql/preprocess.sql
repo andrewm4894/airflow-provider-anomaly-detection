@@ -37,10 +37,19 @@ select
   metric_value,
   metric_recency_rank,
   -- calculate the number of hours since the metric was last updated
-  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago,
+  timestamp_diff(current_timestamp(), metric_timestamp_max, hour) as metric_last_updated_hours_ago,  
+  -- x_... features
   -- lag the metric value by 0, 1, 2, ..., {{ params.preprocess_n_lags }}
   {% for lag_n in range(params.preprocess_n_lags + 2) %}
   lag(metric_value, {{ lag_n }}) over (partition by metric_name order by metric_timestamp) as x_metric_value_lag{{ lag_n }},
+  {% endfor %}
+  -- one-hot encode the hour of the day
+  {% for hour_n in range(24) %}
+  if(extract(hour from metric_timestamp)={{ hour_n }},1,0) as x_hour_is_{{ hour_n }},
+  {% endfor %}
+  -- one-hot encode the dayofweek
+  {% for dayofweek_n in range(7) %}
+  if(extract(dayofweek from metric_timestamp)={{ dayofweek_n }},1,0) as x_dayofweek_is_{{ dayofweek_n }},
   {% endfor %}
 from 
   metric_batch_recency_ranked
@@ -50,9 +59,16 @@ select
   metric_timestamp,
   metric_name,
   metric_value,
+  -- x_... features
   -- take difference between the metric value and the lagged metric value
   {% for lag_n in range(params.preprocess_n_lags + 1) %}
   x_metric_value_lag{{ lag_n }} - x_metric_value_lag{{ lag_n + 1 }} as x_metric_value_lag{{ lag_n }}_diff,
+  {% endfor %}
+  {% for hour_n in range(24) %}
+  x_hour_is_{{ hour_n }},
+  {% endfor %}
+  {% for dayofweek_n in range(7) %}
+  x_dayofweek_is_{{ dayofweek_n }},
   {% endfor %}
 from 
   metric_batch_preprocessed_data
