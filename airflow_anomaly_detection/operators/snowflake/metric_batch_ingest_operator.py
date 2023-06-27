@@ -23,32 +23,11 @@ class SnowflakeMetricBatchIngestOperator(BaseOperator):
         
     def execute(self, context: Any):
         """
-        Executes `insert_job` to generate metrics.
         """
         
-        snowflake_destination_dataset = context['params'].get('snowflake_destination_dataset', 'develop')
-        snowflake_ingest_destination_table_name = context['params'].get('snowflake_ingest_destination_table_name', 'metrics')
-        snowflake_ingest_write_disposition = context['params'].get('snowflake_ingest_write_disposition', 'WRITE_APPEND')
-        
-        snowflake_hook = SnowflakeHook(context['params']['snowflake_connection_id'])
-        snowflake_project_id = snowflake_hook.get_client().project
+        snowflake_hook = SnowflakeHook(context['params'].get('snowflake_connection_id','snowflake_default'))
 
-        snowflake_hook.insert_job(
-            configuration={
-                "query": {
-                    "useLegacySql": False,
-                    "query": self.metric_batch_sql,
-                    "destinationTable": {
-                        "projectId": snowflake_project_id,
-                        "datasetId": snowflake_destination_dataset,
-                        "tableId": snowflake_ingest_destination_table_name,
-                    },
-                    "writeDisposition": snowflake_ingest_write_disposition,
-                    "timePartitioning": {
-                        "type": "DAY",
-                        "field": "metric_timestamp",
-                        "requirePartitionFilter": True,
-                    },
-                }
-            }
+        results = snowflake_hook.run(
+            sql=self.metric_batch_sql,
         )
+        self.log.info(results)
