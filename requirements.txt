@@ -1,5 +1,6 @@
 apache-airflow>=2.0
 apache-airflow-providers-google
+apache-airflow-providers-snowflake
 google-cloud-storage
 pyod
 ascii_graph==1.5.1
