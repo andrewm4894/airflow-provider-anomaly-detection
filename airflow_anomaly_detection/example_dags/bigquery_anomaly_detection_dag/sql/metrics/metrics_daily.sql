@@ -30,11 +30,37 @@ SELECT
   if(rand()>=0.99,rand()*10000,rand()*1000) as metric_value 
 ),
 
+user_churn as
+(
+SELECT 
+  timestamp('{{ ts }}') as metric_timestamp,
+  'user_churn_last24h' as metric_name,
+  if(rand()>=0.99,rand()*10000,rand()*1000) as metric_value 
+),
+
+user_signup_churn_ratio as
+(
+SELECT 
+  user_signups.metric_timestamp as metric_timestamp,
+  'user_signup_churn_ratio_last24h' as metric_name,
+  SAFE_DIVIDE(user_signups.metric_value, user_churn.metric_value) as metric_value
+FROM
+  user_signups
+JOIN
+  user_churn 
+ON 
+  user_signups.metric_timestamp = user_churn.metric_timestamp
+),
+
 metrics_daily as
 (
 select * from user_signups
 union all
 select * from sales_revenue
+union all
+select * from user_churn
+union all
+select * from user_signup_churn_ratio
 )
 
 select
