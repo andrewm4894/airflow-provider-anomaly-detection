@@ -2,6 +2,8 @@
 
 Painless anomaly detection (using [PyOD](https://github.com/yzhao062/pyod)) with [Apache Airflow](https://airflow.apache.org/).
 
+> _Note: If you are interested in a more generic approach to anomaly detection that does not need or use Airflow, check out [Anomstack](https://github.com/andrewm4894/anomstack)_
+
 [![PyPI](https://img.shields.io/pypi/v/airflow-provider-anomaly-detection)](https://pypi.org/project/airflow-provider-anomaly-detection/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/airflow-provider-anomaly-detection)](https://pypi.org/project/airflow-provider-anomaly-detection/)
 [![GitHub](https://img.shields.io/github/license/andrewm4894/airflow-provider-anomaly-detection)](https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob/main/LICENSE)
