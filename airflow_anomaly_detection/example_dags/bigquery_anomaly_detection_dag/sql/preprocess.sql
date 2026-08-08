@@ -51,6 +51,16 @@ select
   {% for dayofweek_n in range(7) %}
   if(extract(dayofweek from metric_timestamp)={{ dayofweek_n }},1,0) as x_dayofweek_is_{{ dayofweek_n }},
   {% endfor %}
+  -- date/time based features
+  {% if params.preprocess_feature_hour_of_day | default(true) %}
+  extract(hour from metric_timestamp) as x_hour_of_day,
+  {% endif %}
+  {% if params.preprocess_feature_is_am | default(true) %}
+  if(extract(hour from metric_timestamp) < 12, 1, 0) as x_is_am,
+  {% endif %}
+  {% if params.preprocess_feature_is_weekday | default(true) %}
+  if(extract(dayofweek from metric_timestamp) between 2 and 6, 1, 0) as x_is_weekday,
+  {% endif %}
 from 
   metric_batch_recency_ranked
 )
@@ -70,6 +80,16 @@ select
   {% for dayofweek_n in range(7) %}
   x_dayofweek_is_{{ dayofweek_n }},
   {% endfor %}
+  -- date/time based features
+  {% if params.preprocess_feature_hour_of_day | default(true) %}
+  x_hour_of_day,
+  {% endif %}
+  {% if params.preprocess_feature_is_am | default(true) %}
+  x_is_am,
+  {% endif %}
+  {% if params.preprocess_feature_is_weekday | default(true) %}
+  x_is_weekday,
+  {% endif %}
 from 
   metric_batch_preprocessed_data
 where
