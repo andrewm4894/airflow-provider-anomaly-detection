@@ -24,6 +24,9 @@ train_max_n: 720 # max number of records to train on.
 train_max_n_days_ago: 30 # max number of days to train on.
 train_metric_last_updated_hours_ago_max: 72 # max number of hours ago the metric was last updated to include in training, otherwise ignore.
 preprocess_n_lags: 2 # number of lags to create for each metric.
+preprocess_feature_hour_of_day: true # include hour of day feature
+preprocess_feature_is_am: true # include is_am feature
+preprocess_feature_is_weekday: true # include is_weekday feature
 score_max_n: 1 # max number of records to score.
 score_max_n_days_ago: 7 # max number of days to score.
 score_metric_last_updated_hours_ago_max: 48 # max number of hours ago the metric was last updated to include in scoring, otherwise ignore.
