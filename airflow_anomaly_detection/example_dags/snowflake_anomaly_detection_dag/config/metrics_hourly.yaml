@@ -1,0 +1,22 @@
+metric_batch_name: metrics_hourly
+metric_batch_description: hourly metrics from various sources
+#airflow_ingest_schedule_interval: '5 * * * *' # more realistic schedule
+#airflow_training_schedule_interval: '30 8 * * *' # more realistic schedule
+#airflow_scoring_schedule_interval: '10 * * * *' # more realistic schedule
+#airflow_alerting_schedule_interval: '15 * * * *' # more realistic schedule
+airflow_ingest_schedule_interval: '*/2 * * * *' # run lots to quickly build some data in example dag
+airflow_training_schedule_interval: '*/15 * * * *' # run lots to quickly build some data in example dag
+airflow_scoring_schedule_interval: '*/3 * * * *' # run lots to quickly build some data in example dag
+airflow_alerting_schedule_interval: '*/4 * * * *' # run lots to quickly build some data in example dag
+airflow_start_date: '2023-01-16'
+train_max_n: 720
+train_max_n_days_ago: 30
+preprocess_n_lags: 3
+score_max_n: 1
+score_max_n_days_ago: 7
+alert_smooth_n: 3
+alert_status_threshold: 0.8
+alert_max_n: 72
+alert_max_n_days_ago: 7
+alert_window_last_n: 1
+alert_metric_last_updated_hours_ago_max: 24

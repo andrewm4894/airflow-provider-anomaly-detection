@@ -20,6 +20,7 @@ docs_url: https://github.com/andrewm4894/airflow-provider-anomaly-detection/blob
 
 operators:
   - module: airflow_anomaly_detection.operators.bigquery.metric_batch_ingest_operator.BigQueryMetricBatchIngestOperator
+  - module: airflow_anomaly_detection.operators.snowflake.metric_batch_ingest_operator.SnowflakeMetricBatchIngestOperator
   - module: airflow_anomaly_detection.operators.bigquery.metric_batch_train_operator.BigQueryMetricBatchTrainOperator
   - module: airflow_anomaly_detection.operators.bigquery.metric_batch_train_operator.BigQueryMetricBatchScoreOperator
   - module: airflow_anomaly_detection.operators.bigquery.metric_batch_alert_operator.BigQueryMetricBatchAlertOperator

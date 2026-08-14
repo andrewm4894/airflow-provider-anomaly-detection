@@ -1,0 +1,41 @@
+# general defaults you might want to apply to each metric batch.
+# you can overwrite the defaults by defining whatever you want in <metric-batch>.yaml files.
+dag_name_prefix: eg_sf_ad_ # a useful prefix for the dags created by this provider.
+snowflake_connection_id: snowflake_default # a snowflake connection to use.
+snowflake_destination_dataset: develop # dataset name to write metrics to.
+snowflake_ingest_destination_table_name: metrics # table name to write metrics to.
+snowflake_score_destination_table_name: metrics_scored # table name to write scored metrics to.
+gcs_model_bucket: some-gcs-bucket # a gcs bucket where trained models will be stored, one per metric.
+alert_emails_to: youremail@example.com # where you want alert emails to be sent.
+graph_symbol: '~' # symbol to use for graphing horizontal lines in alert emails.
+anomaly_symbol: '* ' # symbol to use for flagging anomalies in alert emails.
+normal_symbol: '  ' # symbol to use for flagging normal values in alert emails.
+model_type: iforest # a string to identify the PyOD model type to use.
+model_params: # params to be unpacked into the model constructor.
+  contamination: 0.05
+  n_estimators: 250
+# below params might be better set in <metric-batch>.yaml specific config files
+airflow_ingest_schedule_interval: '5 * * * *' # schedule for the ingest dag.
+airflow_training_schedule_interval: '30 8 * * *' # schedule for the training dag.
+airflow_scoring_schedule_interval: '10 * * * *' # schedule for the scoring dag.
+airflow_alerting_schedule_interval: '15 * * * *' # schedule for the alerting dag.
+airflow_start_date: '2023-01-16' # start date for the dags.
+train_max_n: 720 # max number of records to train on.
+train_max_n_days_ago: 30 # max number of days to train on.
+train_metric_last_updated_hours_ago_max: 72 # max number of hours ago the metric was last updated to include in training, otherwise ignore.
+preprocess_n_lags: 2 # number of lags to create for each metric.
+score_max_n: 1 # max number of records to score.
+score_max_n_days_ago: 7 # max number of days to score.
+score_metric_last_updated_hours_ago_max: 48 # max number of hours ago the metric was last updated to include in scoring, otherwise ignore.
+score_fail_on_no_model: True # whether to fail the scoring dag if no model is found.
+alert_smooth_n: 3 # number of records to smooth over when smoothing anomaly score prior to alerting.
+alert_status_threshold: 0.9 # threshold for the smoothed anomaly score for alerting on.
+alert_max_n: 72 # max number of records to alert on.
+alert_max_n_days_ago: 7 # max number of days to alert on.
+alert_window_last_n: 1 # only alert if anomalies fall within the last n records.
+alert_subject_emoji: '🔥' # emoji to use in alert emails.
+alert_metric_last_updated_hours_ago_max: 48 # max number of hours ago the metric was last updated to include in alerting, otherwise ignore.
+alert_metric_name_n_observations_min: 14 # min number of observations a metric must have to be considered for alerting.
+alert_airflow_fail_on_alert: False # whether to fail the alerting dag if an alert is triggered.
+airflow_log_scores: False # whether to log metrics scores to the airflow logs.
+debug_alert_always: False # whether to always alert on a metric, regardless of the score.

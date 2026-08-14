@@ -70,6 +70,7 @@ x-airflow-common:
     AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: ${AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT:-}
   volumes:
     - ./airflow_anomaly_detection/example_dags/bigquery_anomaly_detection_dag:/opt/airflow/dags/bigquery_anomaly_detection_dag
+    - ./airflow_anomaly_detection/example_dags/snowflake_anomaly_detection_dag:/opt/airflow/dags/snowflake_anomaly_detection_dag
     - ./airflow_anomaly_detection:/opt/airflow/plugins/airflow_anomaly_detection
     - ./logs:/opt/airflow/logs
   user: "${AIRFLOW_UID:-50000}:0"
